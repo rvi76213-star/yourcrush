@@ -1,1 +1,18 @@
-
+{
+    "bot_settings": {
+        "name": "𝗬𝗢𝗨𝗥 𝗖𝗥𝗨𝗦𝗛 ⟵o_0",
+        "admin_id": "YOUR_FACEBOOK_ID",
+        "command_prefix": ".",
+        "response_delay": 2,
+        "sleep_time": 5
+    },
+    "facebook_settings": {
+        "cookie_file": "data/cookies/master_cookies.json",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    },
+    "commands": {
+        "sequential_commands": ["murgi", "love", "dio"],
+        "admin_commands": ["add", "delete", "kick", "out", "start", "stop"],
+        "nickname_commands": ["Bot", "bow", "Jan", "Sona", "Baby"]
+    }
+}
