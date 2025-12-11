@@ -1,0 +1,747 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+⚡ Command Processor System
+Handles all bot commands (.murgi, .love, .pick, etc.)
+"""
+
+import json
+import logging
+import os
+import random
+import re
+import time
+import threading
+from typing import Dict, List, Optional, Any, Callable
+
+from utils.logger import setup_logger
+from utils.file_handler import FileHandler
+
+
+class CommandProcessor:
+    """⚡ Command Processor"""
+    
+    def __init__(self):
+        self.logger = setup_logger("command_processor", "data/logs/command_log.log")
+        self.file_handler = FileHandler()
+        
+        # Load command registry
+        self.command_registry = self._load_command_registry()
+        
+        # Active command threads
+        self.active_commands = {}
+        
+        # Command history
+        self.command_history = []
+        
+        # .murgi sequential execution tracking
+        self.murgi_execution = {
+            "active": False,
+            "current_file": None,
+            "current_line": 0,
+            "total_lines": 0,
+            "thread": None,
+            "paused": False
+        }
+        
+        # Initialize commands
+        self._initialize_commands()
+    
+    def _load_command_registry(self) -> Dict:
+        """Load command registry from file"""
+        try:
+            registry_file = "data/commands/command_registry.json"
+            
+            if os.path.exists(registry_file):
+                with open(registry_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            else:
+                # Create default registry
+                default_registry = {
+                    "prefix_commands": [".murgi", ".love", ".pick", ".dio", ".diagram", ".info", ".uid"],
+                    "admin_commands": ["add", "delete", "kick", "out", "start", "stop"],
+                    "nickname_commands": ["Bot", "bow", "Jan", "Sona", "Baby"],
+                    "command_stats": {},
+                    "last_updated": time.time()
+                }
+                
+                # Save default registry
+                os.makedirs(os.path.dirname(registry_file), exist_ok=True)
+                with open(registry_file, "w", encoding="utf-8") as f:
+                    json.dump(default_registry, f, indent=2)
+                
+                return default_registry
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error loading command registry: {e}")
+            return {}
+    
+    def _initialize_commands(self):
+        """Initialize all command handlers"""
+        # Prefix command handlers
+        self.prefix_handlers = {
+            ".murgi": self._handle_murgi_command,
+            ".love": self._handle_love_command,
+            ".pick": self._handle_pick_command,
+            ".dio": self._handle_dio_command,
+            ".diagram": self._handle_diagram_command,
+            ".info": self._handle_info_command,
+            ".uid": self._handle_uid_command,
+            ".Ln": self._handle_ln_command
+        }
+        
+        # Admin command handlers
+        self.admin_handlers = {
+            "add": self._handle_add_command,
+            "delete": self._handle_delete_command,
+            "kick": self._handle_kick_command,
+            "out": self._handle_out_command,
+            "start": self._handle_start_command,
+            "stop": self._handle_stop_command
+        }
+        
+        # Nickname handlers
+        self.nickname_handlers = {
+            "Bot": self._handle_nickname_bot,
+            "bow": self._handle_nickname_bow,
+            "Jan": self._handle_nickname_jan,
+            "Sona": self._handle_nickname_sona,
+            "Baby": self._handle_nickname_baby
+        }
+    
+    def is_command(self, message: str) -> bool:
+        """Check if message is a command"""
+        if not message:
+            return False
+        
+        message = message.strip()
+        
+        # Check for prefix commands
+        if message.startswith("."):
+            cmd = message.split()[0].lower()
+            return cmd in self.prefix_handlers
+        
+        # Check for admin commands
+        if message.startswith("!"):
+            cmd = message.split()[0][1:].lower()
+            return cmd in self.admin_handlers
+        
+        # Check for nicknames
+        words = message.split()
+        for word in words:
+            if word in self.nickname_handlers:
+                return True
+        
+        return False
+    
+    def execute_command(self, message: str, sender_id: str, thread_id: str, is_group: bool = False) -> Optional[str]:
+        """Execute a command"""
+        try:
+            message = message.strip()
+            
+            # Log command execution
+            self.command_history.append({
+                "command": message,
+                "sender_id": sender_id,
+                "thread_id": thread_id,
+                "timestamp": time.time(),
+                "is_group": is_group
+            })
+            
+            # Trim history
+            if len(self.command_history) > 1000:
+                self.command_history = self.command_history[-1000:]
+            
+            # Check for prefix commands
+            if message.startswith("."):
+                return self._handle_prefix_command(message, sender_id, thread_id, is_group)
+            
+            # Check for admin commands
+            elif message.startswith("!"):
+                return self._handle_admin_command(message, sender_id, thread_id, is_group)
+            
+            # Check for nicknames
+            else:
+                return self._handle_nickname_command(message, sender_id, thread_id, is_group)
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error executing command: {e}")
+            return f"❌ Command error: {str(e)}"
+    
+    def _handle_prefix_command(self, message: str, sender_id: str, thread_id: str, is_group: bool) -> Optional[str]:
+        """Handle prefix commands starting with ."""
+        try:
+            parts = message.split()
+            if not parts:
+                return None
+            
+            cmd = parts[0].lower()
+            args = parts[1:] if len(parts) > 1 else []
+            
+            # Check if command exists
+            if cmd in self.prefix_handlers:
+                # Update command stats
+                self._update_command_stats(cmd)
+                
+                # Execute command
+                response = self.prefix_handlers[cmd](args, sender_id, thread_id, is_group)
+                return response
+            else:
+                return f"❌ Unknown command: {cmd}\n✅ Available: {', '.join(self.prefix_handlers.keys())}"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in prefix command: {e}")
+            return f"❌ Command error: {str(e)}"
+    
+    def _handle_admin_command(self, message: str, sender_id: str, thread_id: str, is_group: bool) -> Optional[str]:
+        """Handle admin commands starting with !"""
+        try:
+            parts = message.split()
+            if not parts:
+                return None
+            
+            cmd = parts[0][1:].lower()  # Remove ! prefix
+            args = parts[1:] if len(parts) > 1 else []
+            
+            # Check admin permissions (simplified - implement proper check)
+            is_admin = self._check_admin_permission(sender_id)
+            
+            if not is_admin:
+                return "❌ Admin permission required!"
+            
+            # Check if command exists
+            if cmd in self.admin_handlers:
+                # Update command stats
+                self._update_command_stats(f"!{cmd}")
+                
+                # Execute command
+                response = self.admin_handlers[cmd](args, sender_id, thread_id, is_group)
+                return response
+            else:
+                return f"❌ Unknown admin command: {cmd}"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in admin command: {e}")
+            return f"❌ Admin command error: {str(e)}"
+    
+    def _handle_nickname_command(self, message: str, sender_id: str, thread_id: str, is_group: bool) -> Optional[str]:
+        """Handle nickname mentions"""
+        try:
+            words = message.split()
+            
+            for word in words:
+                if word in self.nickname_handlers:
+                    # Update command stats
+                    self._update_command_stats(f"@{word}")
+                    
+                    # Execute nickname handler
+                    response = self.nickname_handlers[word](sender_id, thread_id, is_group)
+                    return response
+            
+            return None
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error in nickname command: {e}")
+            return None
+    
+    # ==================== PREFIX COMMAND HANDLERS ====================
+    
+    def _handle_murgi_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .murgi command with sequential execution"""
+        try:
+            # Check if murgi is already running
+            if self.murgi_execution["active"]:
+                return "🐔 Murgi command is already running! Use 'stop!' to stop."
+            
+            # Start murgi execution in separate thread
+            self.murgi_execution["active"] = True
+            self.murgi_execution["paused"] = False
+            
+            # Start execution thread
+            thread = threading.Thread(
+                target=self._execute_murgi_sequence,
+                args=(sender_id, thread_id),
+                daemon=True
+            )
+            
+            self.murgi_execution["thread"] = thread
+            thread.start()
+            
+            return "🐔 Starting murgi sequence... (Type 'stop!' to stop)"
+            
+        except Exception as e:
+            self.murgi_execution["active"] = False
+            self.logger.error(f"❌ Error in murgi command: {e}")
+            return f"❌ Murgi command error: {str(e)}"
+    
+    def _execute_murgi_sequence(self, sender_id: str, thread_id: str):
+        """Execute murgi sequence sequentially"""
+        try:
+            murgi_folder = "data/commands/prefix/murgi/"
+            
+            # Version files to execute
+            version_files = ["v1.txt", "v2.txt", "v3.txt"]
+            
+            for version_file in version_files:
+                file_path = os.path.join(murgi_folder, version_file)
+                
+                if not os.path.exists(file_path):
+                    self.logger.warning(f"⚠️ Murgi file not found: {file_path}")
+                    continue
+                
+                # Read lines from file
+                with open(file_path, "r", encoding="utf-8") as f:
+                    lines = [line.strip() for line in f.readlines() if line.strip()]
+                
+                if not lines:
+                    continue
+                
+                # Update execution info
+                self.murgi_execution["current_file"] = version_file
+                self.murgi_execution["total_lines"] = len(lines)
+                
+                # Send each line with delay
+                for i, line in enumerate(lines):
+                    # Check if stopped
+                    if not self.murgi_execution["active"]:
+                        break
+                    
+                    # Check if paused
+                    while self.murgi_execution["paused"] and self.murgi_execution["active"]:
+                        time.sleep(1)
+                    
+                    if not self.murgi_execution["active"]:
+                        break
+                    
+                    # Update current line
+                    self.murgi_execution["current_line"] = i + 1
+                    
+                    # Send line (in real implementation, you would send via messenger)
+                    self.logger.info(f"🐔 Murgi line {i+1}/{len(lines)}: {line}")
+                    
+                    # Wait before next line
+                    time.sleep(2)  # 2 second delay between lines
+                
+                # Wait between versions
+                if self.murgi_execution["active"] and version_file != version_files[-1]:
+                    time.sleep(5)  # 5 second delay between versions
+            
+            # Reset execution state
+            self.murgi_execution["active"] = False
+            self.murgi_execution["current_file"] = None
+            self.murgi_execution["current_line"] = 0
+            self.murgi_execution["total_lines"] = 0
+            
+            self.logger.info("✅ Murgi sequence completed!")
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error in murgi execution: {e}")
+            self.murgi_execution["active"] = False
+    
+    def _handle_love_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .love command"""
+        try:
+            responses_file = "data/commands/prefix/love/responses.txt"
+            
+            if os.path.exists(responses_file):
+                with open(responses_file, "r", encoding="utf-8") as f:
+                    responses = [line.strip() for line in f.readlines() if line.strip()]
+                
+                if responses:
+                    response = random.choice(responses)
+                    return f"💖 {response}"
+                else:
+                    return "💖 I love you too!"
+            else:
+                # Default responses
+                love_responses = [
+                    "💖 তোমাকে অনেক ভালোবাসি!",
+                    "💕 তুমি আমার সবচেয়ে প্রিয়!",
+                    "❤️ তোমার জন্য我的心 (আমার মন)!",
+                    "💘 তুমি আমার জীবনের আলো!",
+                    "💝 তোমার সাথে থাকতে চাই চিরকাল!"
+                ]
+                return random.choice(love_responses)
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in love command: {e}")
+            return "💖 I love you!"
+    
+    def _handle_pick_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .pick command"""
+        try:
+            picks_file = "data/commands/prefix/pick/picks.txt"
+            
+            if os.path.exists(picks_file):
+                with open(picks_file, "r", encoding="utf-8") as f:
+                    picks = [line.strip() for line in f.readlines() if line.strip()]
+                
+                if picks:
+                    if args:
+                        # Pick specific number of items
+                        try:
+                            count = min(int(args[0]), len(picks), 10)  # Max 10 picks
+                            selected = random.sample(picks, count)
+                            return "🎯 Selected:\n" + "\n".join([f"• {item}" for item in selected])
+                        except:
+                            pick = random.choice(picks)
+                            return f"🎯 {pick}"
+                    else:
+                        pick = random.choice(picks)
+                        return f"🎯 {pick}"
+                else:
+                    return "🎯 Nothing to pick from!"
+            else:
+                return "🎯 Pick list is empty!"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in pick command: {e}")
+            return "🎯 Pick error!"
+    
+    def _handle_dio_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .dio command"""
+        try:
+            dio_file = "data/commands/prefix/dio/dio_lines.txt"
+            
+            if os.path.exists(dio_file):
+                with open(dio_file, "r", encoding="utf-8") as f:
+                    lines = [line.strip() for line in f.readlines() if line.strip()]
+                
+                if lines:
+                    line = random.choice(lines)
+                    return f"🦸‍♂️ {line}"
+                else:
+                    return "🦸‍♂️ WRYYYYYYYY!"
+            else:
+                return "🦸‍♂️ You thought it was Dio, but it was me!"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in dio command: {e}")
+            return "🦸‍♂️ KONO DIO DA!"
+    
+    def _handle_diagram_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .diagram command"""
+        try:
+            types_file = "data/commands/prefix/diagram/types.txt"
+            
+            if os.path.exists(types_file):
+                with open(types_file, "r", encoding="utf-8") as f:
+                    types = [line.strip() for line in f.readlines() if line.strip()]
+                
+                if types:
+                    diagram_type = random.choice(types)
+                    return f"📊 Creating {diagram_type} diagram..."
+                else:
+                    return "📊 Available diagrams: flowchart, sequence, class"
+            else:
+                return "📊 Diagram system ready!"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in diagram command: {e}")
+            return "📊 Diagram error!"
+    
+    def _handle_info_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .info command"""
+        try:
+            info_text = """
+            🤖 𝗬𝗢𝗨𝗥 𝗖𝗥𝗨𝗦𝗛 ⟵o_0 - INFORMATION
+            
+            👑 Author: MAR PD (RANA)
+            📅 Version: 1.0.0
+            🎯 Purpose: Your AI Crush Bot
+            
+            💖 Features:
+            • AI-powered responses
+            • Photo delivery system
+            • Learning from users
+            • Multiple commands
+            • Group management
+            
+            ⚡ Commands:
+            • .murgi - Sequential chicken messages
+            • .love - Romantic messages
+            • .pick - Random picks
+            • .dio - DIO character lines
+            • .info - This information
+            
+            📞 Contact:
+            • Telegram: @rana_editz_00
+            • Phone: 01847634486
+            
+            💾 Status: Active and ready to chat!
+            """
+            
+            return info_text
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error in info command: {e}")
+            return "🤖 Bot information"
+    
+    def _handle_uid_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .uid command"""
+        try:
+            if args:
+                # Get UID for mentioned user
+                mention = args[0]
+                # In real implementation, extract UID from mention
+                return f"🔢 User ID for {mention}: {sender_id} (placeholder)"
+            else:
+                return f"🔢 Your ID: {sender_id}"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in uid command: {e}")
+            return f"🔢 ID: {sender_id}"
+    
+    def _handle_ln_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .Ln command (Line number system)"""
+        try:
+            if args:
+                line_num = int(args[0])
+                return f"📝 Line {line_num}: This is a sample line"
+            else:
+                return "📝 Line number system. Usage: .Ln [number]"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in Ln command: {e}")
+            return "📝 Line command error"
+    
+    # ==================== ADMIN COMMAND HANDLERS ====================
+    
+    def _handle_add_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle add command"""
+        try:
+            if not args:
+                return "➕ Usage: !add [user/pick/url]"
+            
+            add_type = args[0].lower()
+            
+            if add_type == "user" and len(args) > 1:
+                user = args[1]
+                return f"👤 Added user: {user}"
+            
+            elif add_type == "pick" and len(args) > 1:
+                pick_text = " ".join(args[1:])
+                return f"🎯 Added pick: {pick_text}"
+            
+            elif add_type == "url" and len(args) > 1:
+                url = args[1]
+                return f"🔗 Added URL: {url}"
+            
+            else:
+                return "➕ Usage: !add [user @mention | pick text | url link]"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in add command: {e}")
+            return f"❌ Add error: {str(e)}"
+    
+    def _handle_delete_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle delete command"""
+        try:
+            if not args:
+                return "🗑️ Usage: !delete [user/id]"
+            
+            delete_type = args[0].lower()
+            
+            if delete_type == "user" and len(args) > 1:
+                user = args[1]
+                return f"👤 Deleted user: {user}"
+            
+            elif delete_type == "pick" and len(args) > 1:
+                pick_id = args[1]
+                return f"🎯 Deleted pick ID: {pick_id}"
+            
+            else:
+                return "🗑️ Usage: !delete [user @mention | pick id]"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in delete command: {e}")
+            return f"❌ Delete error: {str(e)}"
+    
+    def _handle_kick_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle kick command"""
+        try:
+            if not args:
+                return "👢 Usage: !kick @mention"
+            
+            user = args[0]
+            return f"👢 Kicked user: {user}"
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error in kick command: {e}")
+            return f"❌ Kick error: {str(e)}"
+    
+    def _handle_out_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle out command"""
+        try:
+            if args and args[0].lower() == "admin":
+                return "👑 Bot leaving as admin..."
+            else:
+                return "🚪 Bot leaving group..."
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in out command: {e}")
+            return f"❌ Out error: {str(e)}"
+    
+    def _handle_start_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle start command"""
+        try:
+            if args and "live" in " ".join(args).lower():
+                return "🚀 Starting live stream..."
+            else:
+                return "🚀 Bot starting..."
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in start command: {e}")
+            return f"❌ Start error: {str(e)}"
+    
+    def _handle_stop_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle stop command - stops active commands"""
+        try:
+            # Stop murgi execution
+            if self.murgi_execution["active"]:
+                self.murgi_execution["active"] = False
+                return "⏹️ Stopped active command!"
+            
+            # Stop other active commands
+            stopped = False
+            for cmd_id, cmd_data in self.active_commands.items():
+                if cmd_data.get("active", False):
+                    cmd_data["active"] = False
+                    stopped = True
+            
+            if stopped:
+                return "⏹️ Stopped all active commands!"
+            else:
+                return "⏹️ No active commands to stop!"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error in stop command: {e}")
+            return f"❌ Stop error: {str(e)}"
+    
+    # ==================== NICKNAME HANDLERS ====================
+    
+    def _handle_nickname_bot(self, sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle 'Bot' nickname"""
+        responses = [
+            "🤖 Yes, I am your Bot!",
+            "🤖 বট এখানে আছি!",
+            "🤖 হ্যাঁ বলুন!",
+            "🤖 কি বলছেন?",
+            "🤖 আমি শুনছি!"
+        ]
+        return random.choice(responses)
+    
+    def _handle_nickname_bow(self, sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle 'bow' nickname"""
+        responses = [
+            "🏹 Yes boss?",
+            "🏹 বলুন বস!",
+            "🏹 কি হুকুম?",
+            "🏹 হ্যাঁ বলুন!"
+        ]
+        return random.choice(responses)
+    
+    def _handle_nickname_jan(self, sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle 'Jan' nickname"""
+        responses = [
+            "👨 Yes Jan?",
+            "👨 হ্যাঁ জান?",
+            "👨 কি বলছ জান?",
+            "👨 শুনছি জান!"
+        ]
+        return random.choice(responses)
+    
+    def _handle_nickname_sona(self, sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle 'Sona' nickname"""
+        responses = [
+            "👸 Yes Sona?",
+            "👸 হ্যাঁ সোনা?",
+            "👸 কি বলছ সোনা?",
+            "👸 শুনছি সোনা!"
+        ]
+        return random.choice(responses)
+    
+    def _handle_nickname_baby(self, sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle 'Baby' nickname"""
+        responses = [
+            "👶 Yes Baby?",
+            "👶 হ্যাঁ বেবি?",
+            "👶 কি বলছ বেবি?",
+            "👶 শুনছি বেবি!"
+        ]
+        return random.choice(responses)
+    
+    # ==================== HELPER METHODS ====================
+    
+    def _check_admin_permission(self, user_id: str) -> bool:
+        """Check if user has admin permission"""
+        try:
+            admin_file = "config/admin_config.py"
+            
+            if os.path.exists(admin_file):
+                # Load admin list
+                import config.admin_config as admin_config
+                admin_ids = getattr(admin_config, "ADMIN_IDS", [])
+                
+                return user_id in admin_ids
+            
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error checking admin permission: {e}")
+            return False
+    
+    def _update_command_stats(self, command: str):
+        """Update command usage statistics"""
+        try:
+            if "command_stats" not in self.command_registry:
+                self.command_registry["command_stats"] = {}
+            
+            if command not in self.command_registry["command_stats"]:
+                self.command_registry["command_stats"][command] = 0
+            
+            self.command_registry["command_stats"][command] += 1
+            self.command_registry["last_updated"] = time.time()
+            
+            # Save to file
+            registry_file = "data/commands/command_registry.json"
+            with open(registry_file, "w", encoding="utf-8") as f:
+                json.dump(self.command_registry, f, indent=2)
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error updating command stats: {e}")
+    
+    def stop_murgi(self):
+        """Stop murgi execution"""
+        if self.murgi_execution["active"]:
+            self.murgi_execution["active"] = False
+            self.logger.info("⏹️ Murgi execution stopped")
+            return True
+        return False
+    
+    def pause_murgi(self):
+        """Pause murgi execution"""
+        if self.murgi_execution["active"] and not self.murgi_execution["paused"]:
+            self.murgi_execution["paused"] = True
+            self.logger.info("⏸️ Murgi execution paused")
+            return True
+        return False
+    
+    def resume_murgi(self):
+        """Resume murgi execution"""
+        if self.murgi_execution["active"] and self.murgi_execution["paused"]:
+            self.murgi_execution["paused"] = False
+            self.logger.info("▶️ Murgi execution resumed")
+            return True
+        return False
+    
+    def get_command_status(self) -> Dict:
+        """Get command processor status"""
+        return {
+            "active_commands": len(self.active_commands),
+            "murgi_active": self.murgi_execution["active"],
+            "murgi_paused": self.murgi_execution["paused"],
+            "murgi_progress": f"{self.murgi_execution['current_line']}/{self.murgi_execution['total_lines']}",
+            "command_history_count": len(self.command_history),
+            "total_commands_executed": sum(self.command_registry.get("command_stats", {}).values())
+        }
