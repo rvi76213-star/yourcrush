@@ -1,0 +1,49 @@
+{
+  "bot": {
+    "name": "𝗬𝗢𝗨𝗥 𝗖𝗥𝗨𝗦𝗛 ⟵o_0",
+    "author": "MAR PD",
+    "version": "1.0.0",
+    "status": "active",
+    "personality": "romantic"
+  },
+  "facebook": {
+    "login_method": "cookie",
+    "cookie_file": "data/cookies/master_cookies.json",
+    "profile_url": "https://www.facebook.com/share/17gEJAipcr/",
+    "rate_limit": {
+      "messages_per_minute": 10,
+      "messages_per_hour": 100
+    }
+  },
+  "commands": {
+    "prefix": ".",
+    "admin_prefix": "!",
+    "enabled_commands": ["murgi", "love", "pick", "dio", "info", "uid"],
+    "admin_commands": ["add", "delete", "kick", "out", "start", "stop"]
+  },
+  "photos": {
+    "local_photos": ["master.jpg", "photo.jpg", "own.jpg"],
+    "default_photo": "master.jpg",
+    "facebook_fetch": true,
+    "cache_duration": 3600
+  },
+  "learning": {
+    "enabled": true,
+    "learn_from_users": true,
+    "learn_from_admin": true,
+    "learn_from_bot": true,
+    "max_memory": 1000
+  },
+  "security": {
+    "encrypt_cookies": true,
+    "encrypt_user_data": true,
+    "proxy_rotation": false,
+    "human_behavior": true
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "data/logs/bot_activity.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  }
+}

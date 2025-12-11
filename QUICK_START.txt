@@ -1,0 +1,91 @@
+🤖 YOUR CRUSH AI BOT - QUICK START GUIDE
+=========================================
+
+📦 WHAT YOU NEED:
+1. Python 3.8 or higher
+2. Facebook account (logged in browser)
+3. Your photos (for the bot)
+
+🚀 3-STEP SETUP:
+
+STEP 1: RUN SETUP SCRIPT
+-----------------------
+Windows: Double-click easy_setup.bat
+OR
+Manual: python run.py --setup
+
+STEP 2: ADD YOUR PHOTOS
+-----------------------
+Copy these photos to data/photos/ folder:
+• master.jpg  (Main bot photo)
+• photo.jpg   (Alternative photo)
+• own.jpg     (Personal photo)
+
+STEP 3: EXTRACT COOKIES
+-----------------------
+Run: python run.py --cookies
+Select your browser (Chrome/Firefox/Edge)
+Make sure Facebook is logged in!
+
+🎯 YOUR BOT IS NOW READY!
+
+START THE BOT:
+python run.py
+OR
+python simple_bot.py
+
+💬 CHAT WITH YOUR BOT ON FACEBOOK:
+
+Try these commands:
+• .murgi    - Sequential chicken messages
+• .love     - Romantic responses
+• .pick     - Random selection
+• .info     - Bot information
+• .uid      - Get user ID
+
+Ask for photos:
+• "ছবি দাও"      - Bot's photo
+• "তোমার ফটো"    - Your photo
+• "এডমিনের ছবি"  - Admin's photo
+
+⚡ ADMIN COMMANDS (in chat):
+• !stop     - Stop active commands
+• !add      - Add user/pick
+• !delete   - Delete user/pick
+• !kick     - Kick user
+• !status   - Bot status
+
+🔧 TROUBLESHOOTING:
+
+1. Cookies not working?
+   • Re-extract cookies
+   • Make sure Facebook is logged in
+   • Try different browser
+
+2. Photos not sending?
+   • Check data/photos/ folder
+   • Make sure files are .jpg format
+   • File names: master.jpg, photo.jpg, own.jpg
+
+3. Bot not responding?
+   • Check logs: data/logs/bot_activity.log
+   • Restart bot
+   • Re-extract cookies
+
+📞 SUPPORT:
+• Email: ranaeditz333@gmail.com
+• Telegram: @rana_editz_00
+• Phone: 01847634486
+
+⚠️ IMPORTANT:
+• NEVER share your Facebook cookies!
+• ALWAYS backup your data!
+• Use the bot responsibly!
+• Respect Facebook's terms!
+
+🎉 ENJOY YOUR AI CRUSH BOT! 💖🤖
+
+Bot Name: YOUR CRUSH ⟵o_0
+Author: MAR PD (RANA)
+Version: 1.0.0
+Status: READY TO LAUNCH 🚀
