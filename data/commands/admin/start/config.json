@@ -1,1 +1,94 @@
-
+{
+    "command": "start",
+    "description": "🚀 Start bot operations and features",
+    "version": "3.0.0",
+    "enabled": true,
+    "require_admin": true,
+    "subcommands": {
+        "live": {
+            "enabled": true,
+            "description": "Start live streaming mode",
+            "min_permission": "admin",
+            "cooldown": 300,
+            "max_duration": 240,
+            "min_duration": 5,
+            "default_duration": 30
+        },
+        "bot": {
+            "enabled": true,
+            "description": "Start bot services",
+            "min_permission": "admin",
+            "cooldown": 60
+        },
+        "auto": {
+            "enabled": true,
+            "description": "Start automated features",
+            "min_permission": "moderator",
+            "cooldown": 30
+        },
+        "schedule": {
+            "enabled": true,
+            "description": "Start scheduled tasks",
+            "min_permission": "admin",
+            "cooldown": 60
+        }
+    },
+    "live_mode": {
+        "enabled": true,
+        "features": {
+            "notifications": true,
+            "recording": false,
+            "analytics": true,
+            "interactive": true,
+            "polls": true,
+            "giveaways": false,
+            "reactions": true,
+            "highlights": true
+        },
+        "privacy_levels": ["public", "private", "friends"],
+        "default_title": "Bot Live Session",
+        "viewer_tracking": true,
+        "chat_highlighting": true,
+        "auto_save_chat": true,
+        "save_path": "data/live_sessions/",
+        "format": "json"
+    },
+    "startup_sequences": {
+        "bot": ["load_config", "authenticate", "start_monitoring", "enable_features"],
+        "live": ["announce", "enable_special_commands", "start_recording", "begin_interaction"]
+    },
+    "confirmation": {
+        "required": true,
+        "timeout": 30,
+        "messages": {
+            "live": "🎬 Start live stream? (yes/no)",
+            "bot": "🤖 Start bot services? (yes/no)",
+            "all": "🚀 Start all features? (yes/no)"
+        }
+    },
+    "safety": {
+        "max_concurrent": 1,
+        "min_interval": 600,
+        "resource_limits": {
+            "cpu": 80,
+            "memory": 512,
+            "bandwidth": 100
+        },
+        "auto_stop_on_error": true,
+        "graceful_shutdown": true
+    },
+    "statistics": {
+        "total_starts": 0,
+        "success_rate": 0,
+        "average_duration": 0,
+        "most_used_feature": null,
+        "last_start_time": null
+    },
+    "notifications": {
+        "on_start": true,
+        "periodic_updates": true,
+        "on_completion": true,
+        "error_alerts": true,
+        "admin_notifications": true
+    }
+}

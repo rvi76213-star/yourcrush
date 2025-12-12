@@ -1,0 +1,74 @@
+ADMIN COMMAND: !start live - Start Live Streaming Mode
+=====================================================
+
+DESCRIPTION:
+Starts bot's live streaming mode with special features, notifications,
+and enhanced interaction capabilities.
+
+USAGE:
+  !start live [title] [duration] [privacy]
+
+PARAMETERS:
+  • title     - Optional: Stream title (default: "Bot Live Session")
+  • duration  - Optional: Duration in minutes (default: 30, max: 240)
+  • privacy   - Optional: Privacy level (public/private/friends)
+
+EXAMPLES:
+  !start live
+  !start live "Q&A Session" 60
+  !start live "Bot Tutorial" 45 private
+  !start live "Fun Chat" 120 friends
+
+LIVE MODE FEATURES:
+  ✅ Enhanced responses with live indicators
+  ✅ Priority message processing
+  ✅ Special live-only commands
+  ✅ Real-time notifications
+  ✅ Live reaction system
+  ✅ Audience interaction tools
+  ✅ Auto-recording (optional)
+  ✅ Live analytics
+
+COMMANDS AVAILABLE IN LIVE MODE:
+  • !live stop      - End live stream
+  • !live pause     - Pause streaming
+  • !live resume    - Resume streaming
+  • !live viewers   - Show viewer count
+  • !live question  - Ask a question
+  • !live poll      - Create a poll
+  • !live giveaway  - Start giveaway
+
+NOTIFICATIONS:
+  • Bot sends start notification to all users
+  • Periodic updates during stream
+  • End notification with summary
+  • Viewership statistics
+
+SETTINGS (configurable):
+  • Auto-start recording: false
+  • Save chat log: true
+  • Send highlights: true
+  • Interactive polls: true
+  • Viewer rewards: false
+  • Cooldown period: 300 seconds
+
+NOTES:
+  ⚠️ Requires bot admin privileges
+  ⚠️ Max concurrent live sessions: 1
+  ⚠️ Minimum interval between lives: 10 minutes
+  ⚠️ Data is logged for analytics
+  ⚠️ Users can opt-out of notifications
+
+ERROR HANDLING:
+  ❌ Already live: "Live session already active!"
+  ❌ No permission: "Admin permission required!"
+  ❌ Invalid duration: "Duration must be 5-240 minutes"
+  ❌ System busy: "Please wait before starting new live"
+
+SUCCESS MESSAGE:
+  ✅ "🎬 LIVE STREAM STARTED!
+      Title: {title}
+      Duration: {duration} minutes
+      Privacy: {privacy}
+      Started at: {time}
+      Use !live help for commands"
