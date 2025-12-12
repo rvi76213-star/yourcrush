@@ -1,1 +1,26 @@
-
+{
+    "command": "delete",
+    "description": "🗑️ Delete operations with safety measures",
+    "version": "2.0.0",
+    "subcommands": ["user", "pick", "url", "message", "log"],
+    "require_admin": true,
+    "confirmation_required": true,
+    "confirmation_timeout": 30,
+    "audit_log": true,
+    "backup_before_delete": true,
+    "recycle_bin": true,
+    "retention_days": 30,
+    "safety_checks": {
+        "check_references": true,
+        "warn_if_active": true,
+        "notify_user": false,
+        "cooldown_period": 3600
+    },
+    "permissions": {
+        "user": ["admin"],
+        "pick": ["admin", "moderator"],
+        "url": ["admin", "moderator"],
+        "message": ["admin", "moderator"],
+        "log": ["admin"]
+    }
+}
