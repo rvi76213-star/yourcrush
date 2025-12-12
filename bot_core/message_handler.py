@@ -544,3 +544,829 @@ class MessageHandler:
             "total_messages_processed": sum(len(history) for history in self.user_history.values()),
             "intent_patterns": {k: len(v) for k, v in self.patterns.items()}
         }
+
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+📨 Message Handler - Process incoming messages
+"""
+
+import re
+import json
+import time
+import random
+from datetime import datetime
+from typing import Dict, List, Optional, Tuple, Any
+from pathlib import Path
+
+class MessageHandler:
+    """Handles message processing and routing"""
+    
+    def __init__(self, bot_core):
+        self.bot = bot_core
+        self.logger = bot_core.logger
+        self.config = bot_core.config
+        
+        # Command patterns
+        self.command_patterns = {
+            'prefix': re.compile(r'^\.(\w+)(?:\s+(.*))?$'),
+            'admin': re.compile(r'^!(\w+)(?:\s+(.*))?$'),
+            'stop': re.compile(r'^stop!$', re.IGNORECASE),
+            'pause': re.compile(r'^pause!$', re.IGNORECASE),
+            'resume': re.compile(r'^resume!$', re.IGNORECASE)
+        }
+        
+        # Photo request keywords
+        self.photo_keywords = {
+            'bengali': ['ছবি', 'ফটো', 'চিত্র', 'ছবিটা', 'ফটোগ্রাফ'],
+            'english': ['photo', 'pic', 'picture', 'image', 'img'],
+            'request': ['দাও', 'চাই', 'পাঠাও', 'দেখাও', 'send', 'show', 'give']
+        }
+        
+        # Greeting patterns
+        self.greeting_patterns = [
+            r'^(hi|hello|hey|hola|namaste|salam|salut)$',
+            r'^(হাই|হ্যালো|হেলো|সালাম|নমস্কার|অভিবাদন)$',
+            r'^(good\s+(morning|afternoon|evening|night))$',
+            r'^(সুপ্রভাত|শুভ সকাল|শুভ দুপুর|শুভ সন্ধ্যা|শুভ রাত্রি)$'
+        ]
+        
+        # Load response patterns
+        self.response_patterns = self.load_response_patterns()
+        
+        self.logger.info("MessageHandler initialized")
+    
+    def load_response_patterns(self) -> Dict:
+        """Load response patterns from JSON files"""
+        patterns = {}
+        json_dir = "data/json_responses"
+        
+        if not Path(json_dir).exists():
+            return patterns
+        
+        for file in Path(json_dir).glob("*.json"):
+            try:
+                with open(file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    key = file.stem
+                    patterns[key] = {
+                        'responses': data.get('responses', []),
+                        'triggers': data.get('triggers', [])
+                    }
+            except Exception as e:
+                self.logger.error(f"Error loading {file}: {e}")
+        
+        return patterns
+    
+    def process_message(self, message: str, user_id: str, chat_type: str = "private") -> Dict:
+        """
+        Process incoming message and return response
+        
+        Returns:
+            Dict with keys: 'response', 'type', 'action', 'media_path'
+        """
+        message = message.strip()
+        if not message:
+            return self.create_response("Empty message received", "text")
+        
+        # Log message
+        self.log_message(message, user_id, chat_type)
+        
+        # Check for stop/pause/resume commands first
+        if self.is_control_command(message):
+            return self.handle_control_command(message)
+        
+        # Check if it's a command
+        if self.is_command(message):
+            return self.handle_command(message, user_id, chat_type)
+        
+        # Check for photo request
+        photo_type = self.detect_photo_request(message)
+        if photo_type:
+            return self.handle_photo_request(photo_type, user_id)
+        
+        # Check for greeting
+        if self.is_greeting(message):
+            return self.handle_greeting(message, user_id)
+        
+        # Check for farewell
+        if self.is_farewell(message):
+            return self.handle_farewell(message, user_id)
+        
+        # Check for question
+        if self.is_question(message):
+            return self.handle_question(message, user_id)
+        
+        # Check for romantic content
+        if self.is_romantic(message):
+            return self.handle_romantic(message, user_id)
+        
+        # Check for angry content
+        if self.is_angry(message):
+            return self.handle_angry(message, user_id)
+        
+        # Default response
+        return self.handle_default(message, user_id)
+    
+    def is_control_command(self, message: str) -> bool:
+        """Check if message is a control command"""
+        message_lower = message.lower().strip()
+        
+        control_commands = ['stop!', 'pause!', 'resume!']
+        return message_lower in control_commands
+    
+    def handle_control_command(self, message: str) -> Dict:
+        """Handle control commands (stop, pause, resume)"""
+        message_lower = message.lower().strip()
+        
+        if message_lower == 'stop!':
+            if self.bot.sequential_active:
+                self.bot.sequential_stop = True
+                response = "🛑 Sequential command stopped!"
+                action = "stop_sequence"
+            else:
+                response = "ℹ️ No active sequence to stop"
+                action = None
+        
+        elif message_lower == 'pause!':
+            if self.bot.sequential_active and not self.bot.sequential_pause:
+                self.bot.sequential_pause = True
+                response = "⏸️ Sequential command paused!"
+                action = "pause_sequence"
+            else:
+                response = "ℹ️ No active sequence to pause"
+                action = None
+        
+        elif message_lower == 'resume!':
+            if self.bot.sequential_active and self.bot.sequential_pause:
+                self.bot.sequential_pause = False
+                response = "▶️ Sequential command resumed!"
+                action = "resume_sequence"
+            else:
+                response = "ℹ️ No active sequence to resume"
+                action = None
+        
+        else:
+            response = "❌ Unknown control command"
+            action = None
+        
+        return self.create_response(response, "text", action)
+    
+    def is_command(self, message: str) -> bool:
+        """Check if message is a command"""
+        message_stripped = message.strip()
+        return message_stripped.startswith('.') or message_stripped.startswith('!')
+    
+    def handle_command(self, message: str, user_id: str, chat_type: str) -> Dict:
+        """Handle command messages"""
+        message_stripped = message.strip()
+        
+        # Parse command
+        if message_stripped.startswith('.'):
+            command_type = 'prefix'
+            match = self.command_patterns['prefix'].match(message_stripped)
+        else:  # starts with '!'
+            command_type = 'admin'
+            match = self.command_patterns['admin'].match(message_stripped)
+        
+        if not match:
+            return self.create_response("❌ Invalid command format", "text")
+        
+        command = match.group(1).lower()
+        args = match.group(2) if match.group(2) else ""
+        
+        # Check if command is enabled
+        if not self.is_command_enabled(command, command_type):
+            return self.create_response(f"❌ Command '{command}' is disabled", "text")
+        
+        # Check user permissions
+        if not self.check_permissions(command, command_type, user_id, chat_type):
+            return self.create_response("❌ Permission denied", "text")
+        
+        # Process command
+        if command_type == 'prefix':
+            return self.handle_prefix_command(command, args, user_id)
+        else:  # admin command
+            return self.handle_admin_command(command, args, user_id, chat_type)
+    
+    def is_command_enabled(self, command: str, command_type: str) -> bool:
+        """Check if command is enabled in config"""
+        if command_type == 'prefix':
+            enabled_commands = self.config.get('commands', {}).get('enabled_commands', [])
+            return command in enabled_commands
+        else:  # admin command
+            admin_commands = self.config.get('commands', {}).get('admin_commands', [])
+            return command in admin_commands
+    
+    def check_permissions(self, command: str, command_type: str, user_id: str, chat_type: str) -> bool:
+        """Check if user has permission to use command"""
+        # For now, allow all prefix commands
+        if command_type == 'prefix':
+            return True
+        
+        # For admin commands, check if user is admin
+        # In real implementation, check against admin list
+        admin_ids = self.config.get('admins', [])
+        
+        # For testing, allow if user_id contains "admin" or is in list
+        if 'admin' in user_id.lower() or user_id in admin_ids:
+            return True
+        
+        # Allow certain admin commands for everyone in groups
+        if chat_type == 'group' and command in ['add', 'kick']:
+            return True
+        
+        return False
+    
+    def handle_prefix_command(self, command: str, args: str, user_id: str) -> Dict:
+        """Handle prefix commands (starting with .)"""
+        # Add user to recent users
+        self.add_user_interaction(user_id, command)
+        
+        # Process specific commands
+        if command == 'murgi':
+            return self.handle_murgi_command(user_id)
+        
+        elif command == 'love':
+            return self.handle_love_command(user_id)
+        
+        elif command == 'pick':
+            return self.handle_pick_command(args, user_id)
+        
+        elif command == 'dio':
+            return self.handle_dio_command(user_id)
+        
+        elif command == 'info':
+            return self.handle_info_command(user_id)
+        
+        elif command == 'uid':
+            return self.handle_uid_command(user_id)
+        
+        elif command == 'diagram':
+            return self.handle_diagram_command(args, user_id)
+        
+        elif command == 'ln':
+            return self.handle_ln_command(args, user_id)
+        
+        else:
+            return self.create_response(f"❌ Unknown command: .{command}", "text")
+    
+    def handle_murgi_command(self, user_id: str) -> Dict:
+        """Handle .murgi command"""
+        # Start sequential murgi in background
+        self.bot.sequential_active = True
+        self.bot.sequential_stop = False
+        self.bot.sequential_pause = False
+        
+        # Import threading here to avoid circular import
+        import threading
+        
+        def run_murgi_sequence():
+            """Run murgi sequence in background"""
+            try:
+                # Get murgi lines
+                murgi_lines = self.bot.responses.get('murgi', [])
+                
+                if not murgi_lines:
+                    self.logger.error("No murgi lines found")
+                    return
+                
+                # Split into groups of 10
+                groups = [murgi_lines[i:i+10] for i in range(0, len(murgi_lines), 10)]
+                
+                for group_num, group in enumerate(groups, 1):
+                    if self.bot.sequential_stop:
+                        break
+                    
+                    self.logger.info(f"Processing murgi group {group_num}")
+                    
+                    # Send each line with delay
+                    for line_num, line in enumerate(group, 1):
+                        if self.bot.sequential_stop:
+                            break
+                        
+                        # Check for pause
+                        while self.bot.sequential_pause and not self.bot.sequential_stop:
+                            time.sleep(0.5)
+                        
+                        if self.bot.sequential_stop:
+                            break
+                        
+                        # Simulate sending line (in real bot, send to Facebook)
+                        self.logger.info(f"[MURGI {group_num}.{line_num}] {line}")
+                        
+                        # Delay between lines
+                        time.sleep(2.0)
+                    
+                    # Delay between groups
+                    if group_num < len(groups) and not self.bot.sequential_stop:
+                        time.sleep(5.0)
+                
+                self.bot.sequential_active = False
+                self.logger.info("Murgi sequence completed")
+                
+            except Exception as e:
+                self.logger.error(f"Error in murgi sequence: {e}")
+                self.bot.sequential_active = False
+        
+        # Start thread
+        thread = threading.Thread(target=run_murgi_sequence, daemon=True)
+        thread.start()
+        
+        return self.create_response(
+            "🐔 Starting .murgi sequence...\n"
+            "🛑 Use 'stop!' to stop\n"
+            "⏸️ Use 'pause!' to pause\n"
+            "▶️ Use 'resume!' to resume",
+            "text",
+            "start_sequence"
+        )
+    
+    def handle_love_command(self, user_id: str) -> Dict:
+        """Handle .love command"""
+        responses = self.bot.responses.get('love', [])
+        if not responses:
+            response = "💖 তোমাকে অনেক ভালোবাসি!"
+        else:
+            response = random.choice(responses)
+        
+        return self.create_response(response, "text")
+    
+    def handle_pick_command(self, args: str, user_id: str) -> Dict:
+        """Handle .pick command"""
+        items = []
+        
+        if args:
+            # Split by comma or space
+            if ',' in args:
+                items = [item.strip() for item in args.split(',') if item.strip()]
+            else:
+                items = [item.strip() for item in args.split() if item.strip()]
+        
+        # If no items provided, use default
+        if not items:
+            items = ["রেড", "ব্লু", "গ্রিন", "ইয়েলো", "পিঙ্ক", "পার্পল", "অরেঞ্জ"]
+        
+        # Pick random item
+        choice = random.choice(items)
+        
+        # Get response templates
+        templates = self.bot.responses.get('pick', [])
+        if templates:
+            template = random.choice(templates)
+            response = template.replace('{}', choice)
+        else:
+            response = f"🎯 আমার পছন্দ: {choice}!"
+        
+        return self.create_response(response, "text")
+    
+    def handle_dio_command(self, user_id: str) -> Dict:
+        """Handle .dio command"""
+        responses = self.bot.responses.get('dio', [])
+        if not responses:
+            response = "🦸‍♂️ কনসাইস! ডিও এখানে!"
+        else:
+            response = random.choice(responses)
+        
+        return self.create_response(response, "text")
+    
+    def handle_info_command(self, user_id: str) -> Dict:
+        """Handle .info command"""
+        responses = self.bot.responses.get('info', [])
+        if not responses:
+            response = f"🤖 বট নাম: {self.bot.name}\n👑 ডেভেলপার: {self.bot.author}"
+        else:
+            response = random.choice(responses)
+        
+        return self.create_response(response, "text")
+    
+    def handle_uid_command(self, user_id: str) -> Dict:
+        """Handle .uid command"""
+        return self.create_response(f"👤 Your User ID: {user_id}", "text")
+    
+    def handle_diagram_command(self, args: str, user_id: str) -> Dict:
+        """Handle .diagram command"""
+        diagram_types = ['flowchart', 'sequence', 'mindmap', 'pie', 'bar']
+        
+        if args and args.lower() in diagram_types:
+            diagram_type = args.lower()
+        else:
+            diagram_type = random.choice(diagram_types)
+        
+        diagrams = {
+            'flowchart': "📊 ফ্লোচার্ট ডায়াগ্রাম তৈরি করা হলো!",
+            'sequence': "🔄 সিকোয়েন্স ডায়াগ্রাম তৈরি করা হলো!",
+            'mindmap': "🧠 মাইন্ডম্যাপ তৈরি করা হলো!",
+            'pie': "🥧 পাই চার্ট তৈরি করা হলো!",
+            'bar': "📈 বার চার্ট তৈরি করা হলো!"
+        }
+        
+        response = diagrams.get(diagram_type, "📊 ডায়াগ্রাম তৈরি করা হলো!")
+        return self.create_response(response, "text")
+    
+    def handle_ln_command(self, args: str, user_id: str) -> Dict:
+        """Handle .Ln command"""
+        try:
+            if args:
+                line_num = int(args)
+                if 1 <= line_num <= 100:
+                    response = f"📜 Line {line_num}: This is line number {line_num}"
+                else:
+                    response = f"❌ Line number must be between 1 and 100"
+            else:
+                response = "📜 Usage: .Ln <line_number>\nExample: .Ln 5"
+        except ValueError:
+            response = "❌ Invalid line number"
+        
+        return self.create_response(response, "text")
+    
+    def handle_admin_command(self, command: str, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle admin commands (starting with !)"""
+        admin_commands = {
+            'add': self.handle_add_command,
+            'delete': self.handle_delete_command,
+            'kick': self.handle_kick_command,
+            'out': self.handle_out_command,
+            'start': self.handle_start_command,
+            'stop': self.handle_stop_admin_command
+        }
+        
+        handler = admin_commands.get(command)
+        if handler:
+            return handler(args, user_id, chat_type)
+        else:
+            return self.create_response(f"❌ Unknown admin command: !{command}", "text")
+    
+    def handle_add_command(self, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle !add command"""
+        if chat_type == 'group' and args:
+            response = f"✅ Added {args} to the group!"
+        else:
+            response = "➕ Add command executed!"
+        
+        return self.create_response(response, "text")
+    
+    def handle_delete_command(self, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle !delete command"""
+        if chat_type == 'group' and args:
+            response = f"🗑️ Deleted {args} from the group!"
+        else:
+            response = "🗑️ Delete command executed!"
+        
+        return self.create_response(response, "text")
+    
+    def handle_kick_command(self, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle !kick command"""
+        if chat_type == 'group' and args:
+            response = f"👢 Kicked {args} from the group!"
+        else:
+            response = "👢 Kick command executed!"
+        
+        return self.create_response(response, "text")
+    
+    def handle_out_command(self, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle !out command"""
+        if args == 'admin':
+            response = "👑 Admin mode: Leaving group as admin!"
+        else:
+            response = "👋 Leaving the group!"
+        
+        return self.create_response(response, "text")
+    
+    def handle_start_command(self, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle !start command"""
+        if args == 'live':
+            response = "📡 Live stream started!"
+        else:
+            response = "🚀 Bot started!"
+        
+        return self.create_response(response, "text")
+    
+    def handle_stop_admin_command(self, args: str, user_id: str, chat_type: str) -> Dict:
+        """Handle !stop command"""
+        if args == 'bot':
+            response = "⏹️ Bot stopping..."
+            action = "stop_bot"
+        else:
+            response = "🛑 Command stopped!"
+            action = "stop_command"
+        
+        return self.create_response(response, "text", action)
+    
+    def detect_photo_request(self, message: str) -> Optional[str]:
+        """Detect photo request in message"""
+        message_lower = message.lower()
+        
+        # Check for photo keywords
+        has_photo_word = any(word in message_lower for word in 
+                           self.photo_keywords['bengali'] + self.photo_keywords['english'])
+        
+        has_request_word = any(word in message_lower for word in self.photo_keywords['request'])
+        
+        if not (has_photo_word or has_request_word):
+            return None
+        
+        # Determine photo type
+        if 'তোমার' in message_lower or 'your' in message_lower:
+            return 'personal'
+        elif 'বটের' in message_lower or 'bot' in message_lower:
+            return 'bot'
+        elif 'এডমিন' in message_lower or 'admin' in message_lower or 'মাস্টার' in message_lower:
+            return 'admin'
+        elif 'ফেসবুক' in message_lower or 'facebook' in message_lower:
+            return 'facebook'
+        else:
+            return 'general'
+    
+    def handle_photo_request(self, photo_type: str, user_id: str) -> Dict:
+        """Handle photo request"""
+        # Get photo path based on type
+        photo_path = None
+        
+        if photo_type == 'personal':
+            photo_path = self.bot.get_photo_path('own')
+            response = "👤 তোমার জন্য আমার ব্যক্তিগত ছবি!"
+        elif photo_type == 'bot':
+            photo_path = self.bot.get_photo_path('master')
+            response = "🤖 এই নাও বটের ছবি!"
+        elif photo_type == 'admin':
+            photo_path = self.bot.get_photo_path('photo')
+            response = "👑 এডমিনের ছবি পাঠাচ্ছি!"
+        elif photo_type == 'facebook':
+            response = "📘 ফেসবুক প্রোফাইল থেকে ছবি নেওয়া হচ্ছে!"
+            # In real implementation, fetch from Facebook
+        else:
+            photo_path = self.bot.get_photo_path()
+            response = "📸 তোমার জন্য একটি ছবি!"
+        
+        if photo_path and Path(photo_path).exists():
+            return self.create_response(response, "photo", "send_photo", photo_path)
+        else:
+            return self.create_response("😔 দুঃখিত, এখন কোনো ছবি নেই!", "text")
+    
+    def is_greeting(self, message: str) -> bool:
+        """Check if message is a greeting"""
+        message_lower = message.lower().strip()
+        
+        for pattern in self.greeting_patterns:
+            if re.match(pattern, message_lower, re.IGNORECASE):
+                return True
+        
+        return False
+    
+    def handle_greeting(self, message: str, user_id: str) -> Dict:
+        """Handle greeting messages"""
+        # Use pattern-based responses if available
+        if 'greetings' in self.response_patterns:
+            responses = self.response_patterns['greetings']['responses']
+            if responses:
+                response = random.choice(responses)
+                return self.create_response(response, "text")
+        
+        # Default greeting responses
+        greetings = [
+            "হ্যালো! 😊",
+            "কেমন আছো? ✨",
+            "হাই! আজকে কেমন যাচ্ছে? 💖",
+            "নমস্কার! আমি তোমার ক্রাশ বট! 😘",
+            "সালাম! সব ভালো? 🙏"
+        ]
+        
+        response = random.choice(greetings)
+        return self.create_response(response, "text")
+    
+    def is_farewell(self, message: str) -> bool:
+        """Check if message is a farewell"""
+        message_lower = message.lower()
+        
+        farewell_words = ['bye', 'goodbye', 'বিদায়', 'বাই', 'শুভ রাত্রি', 'good night', 'চললাম', 'যাই']
+        return any(word in message_lower for word in farewell_words)
+    
+    def handle_farewell(self, message: str, user_id: str) -> Dict:
+        """Handle farewell messages"""
+        if 'farewells' in self.response_patterns:
+            responses = self.response_patterns['farewells']['responses']
+            if responses:
+                response = random.choice(responses)
+                return self.create_response(response, "text")
+        
+        farewells = [
+            "বিদায়! খেয়াল রাখবে! 👋",
+            "বাই! আবার কথা বলব! ✨",
+            "শুভ রাত্রি! ভালো ঘুম! 🌙",
+            "টাটা! কথা হবে! 💖",
+            "যাও! আবার দেখা হবে! 🚀"
+        ]
+        
+        response = random.choice(farewells)
+        return self.create_response(response, "text")
+    
+    def is_question(self, message: str) -> bool:
+        """Check if message is a question"""
+        return '?' in message or any(word in message.lower() for word in 
+                                   ['কী', 'কেন', 'কিভাবে', 'কখন', 'কোথায়', 'কে', 'কি',
+                                    'what', 'why', 'how', 'when', 'where', 'who'])
+    
+    def handle_question(self, message: str, user_id: str) -> Dict:
+        """Handle question messages"""
+        if 'questions' in self.response_patterns:
+            responses = self.response_patterns['questions']['responses']
+            if responses:
+                response = random.choice(responses)
+                return self.create_response(response, "text")
+        
+        questions = [
+            "ভালো প্রশ্ন! 🤔",
+            "জানি না, তুমি কি মনে কর? 💭",
+            "এটা জটিল প্রশ্ন! 🧠",
+            "আমি ভাবতে হবে... ⏳",
+            "তোমার মতামত কি? 👂"
+        ]
+        
+        response = random.choice(questions)
+        return self.create_response(response, "text")
+    
+    def is_romantic(self, message: str) -> bool:
+        """Check if message has romantic content"""
+        message_lower = message.lower()
+        
+        romantic_words = ['ভালোবাস', 'লাভ', 'love', 'প্রেম', 'ক্রাশ', 'মিস', 'miss', 
+                         'হৃদয়', 'heart', 'রোমান্টিক', 'romantic', 'চুমু', 'kiss']
+        
+        return any(word in message_lower for word in romantic_words)
+    
+    def handle_romantic(self, message: str, user_id: str) -> Dict:
+        """Handle romantic messages"""
+        if 'romantic' in self.response_patterns:
+            responses = self.response_patterns['romantic']['responses']
+            if responses:
+                response = random.choice(responses)
+                return self.create_response(response, "text")
+        
+        romantic = [
+            "তুমি আমার বিশেষ মানুষ! 💘",
+            "তোমার কথা ভাবলে হাসি পায়! 😊",
+            "তুমি ছাড়া জীবন অসম্পূর্ণ! 💔",
+            "তোমার চোখে আকাশ দেখি! ✨",
+            "তুমি আমার স্বপ্নের রানি/রাজা! 👑"
+        ]
+        
+        response = random.choice(romantic)
+        return self.create_response(response, "text")
+    
+    def is_angry(self, message: str) -> bool:
+        """Check if message has angry content"""
+        message_lower = message.lower()
+        
+        angry_words = ['রাগ', 'খারাপ', 'বিরক্ত', 'angry', 'bad', 'hate', 'ঘৃণা', 
+                      'অসন্তুষ্ট', 'নিরাশ', 'frustrated', 'annoyed']
+        
+        return any(word in message_lower for word in angry_words)
+    
+    def handle_angry(self, message: str, user_id: str) -> Dict:
+        """Handle angry messages"""
+        if 'angry' in self.response_patterns:
+            responses = self.response_patterns['angry']['responses']
+            if responses:
+                response = random.choice(responses)
+                return self.create_response(response, "text")
+        
+        angry = [
+            "এটা মেনে নেওয়া কঠিন! 😠",
+            "আমি মন খারাপ করছি! 😞",
+            "এটা ঠিক না! 🚫",
+            "আমি রেগে গেছি! 🔥",
+            "এটা বন্ধ করো! ✋"
+        ]
+        
+        response = random.choice(angry)
+        return self.create_response(response, "text")
+    
+    def handle_default(self, message: str, user_id: str) -> Dict:
+        """Handle default/fallback messages"""
+        if 'neutral' in self.response_patterns:
+            responses = self.response_patterns['neutral']['responses']
+            if responses:
+                response = random.choice(responses)
+                return self.create_response(response, "text")
+        
+        defaults = [
+            "বলো! কি বলতে চাও? 💬",
+            "আমি শুনছি... 👂",
+            "আরো বলো... ✨",
+            "বুঝলাম! কি করতে চাও? 🤔",
+            "মজার কথা! 😄",
+            "তোমার সাথে কথা বলে ভালো লাগছে! 💖",
+            "আচ্ছা! এরপর? 🔄",
+            "জানি না! 🤷",
+            "চলতে থাকো! 🚶"
+        ]
+        
+        response = random.choice(defaults)
+        return self.create_response(response, "text")
+    
+    def create_response(self, text: str, response_type: str = "text", 
+                       action: Optional[str] = None, media_path: Optional[str] = None) -> Dict:
+        """Create a standardized response dictionary"""
+        return {
+            'response': text,
+            'type': response_type,
+            'action': action,
+            'media_path': media_path,
+            'timestamp': datetime.now().isoformat()
+        }
+    
+    def log_message(self, message: str, user_id: str, chat_type: str):
+        """Log message for learning and statistics"""
+        log_entry = {
+            'timestamp': datetime.now().isoformat(),
+            'user_id': user_id,
+            'chat_type': chat_type,
+            'message': message,
+            'length': len(message)
+        }
+        
+        # Save to recent messages
+        self.bot.command_history.append(log_entry)
+        
+        # Limit history size
+        if len(self.bot.command_history) > 1000:
+            self.bot.command_history = self.bot.command_history[-1000:]
+        
+        # Log to file
+        self.logger.info(f"Message from {user_id} ({chat_type}): {message[:100]}...")
+    
+    def add_user_interaction(self, user_id: str, interaction_type: str):
+        """Add user interaction for learning"""
+        if user_id not in self.bot.user_data:
+            self.bot.user_data[user_id] = {
+                'interaction_count': 0,
+                'last_interaction': datetime.now().isoformat(),
+                'preferences': {},
+                'command_usage': {}
+            }
+        
+        user_data = self.bot.user_data[user_id]
+        user_data['interaction_count'] += 1
+        user_data['last_interaction'] = datetime.now().isoformat()
+        
+        # Track command usage
+        if interaction_type:
+            if 'command_usage' not in user_data:
+                user_data['command_usage'] = {}
+            
+            user_data['command_usage'][interaction_type] = \
+                user_data['command_usage'].get(interaction_type, 0) + 1
+
+if __name__ == "__main__":
+    print("Message Handler Module Loaded")
+    
+    # Test the handler
+    from unittest.mock import Mock
+    
+    mock_bot = Mock()
+    mock_bot.logger = Mock()
+    mock_bot.logger.info = print
+    mock_bot.logger.error = print
+    mock_bot.config = {
+        'commands': {
+            'enabled_commands': ['murgi', 'love', 'pick', 'dio', 'info', 'uid'],
+            'admin_commands': ['add', 'delete', 'kick', 'out', 'start', 'stop']
+        }
+    }
+    mock_bot.responses = {
+        'love': ['💖 Test love response'],
+        'pick': ['🎯 Test pick response: {}'],
+        'dio': ['🦸‍♂️ Test dio response'],
+        'info': ['🤖 Test info response']
+    }
+    mock_bot.sequential_active = False
+    mock_bot.sequential_stop = False
+    mock_bot.sequential_pause = False
+    mock_bot.command_history = []
+    mock_bot.user_data = {}
+    
+    handler = MessageHandler(mock_bot)
+    
+    test_messages = [
+        ".murgi",
+        ".love",
+        ".pick red,blue,green",
+        "ছবি দাও",
+        "হাই",
+        "বিদায়",
+        "তুমি কেমন আছো?",
+        "আমি তোমাকে ভালোবাসি",
+        "আমি রেগে আছি",
+        "হ্যালো ওয়ার্ল্ড"
+    ]
+    
+    print("\n🧪 Testing Message Handler:")
+    print("="*50)
+    
+    for msg in test_messages:
+        result = handler.process_message(msg, "test_user_123")
+        print(f"💬 Input: {msg}")
+        print(f"🤖 Response: {result['response'][:50]}...")
+        print()

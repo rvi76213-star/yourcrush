@@ -111,7 +111,7 @@ class FacebookMessenger:
     def _extract_user_id(self, html_content: str) -> Optional[str]:
         """Extract user ID from Facebook page"""
         try:
-            # Method 1: Look for user ID in page
+            # Look for user ID in page
             import re
             
             # Pattern for user ID
@@ -127,7 +127,7 @@ class FacebookMessenger:
                 if match:
                     return match.group(1)
             
-            # Method 2: Try to get from GraphQL
+            # Try to get from GraphQL
             graphql_pattern = r'{"viewer":"(\d+)"'
             match = re.search(graphql_pattern, html_content)
             if match:
