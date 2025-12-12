@@ -1,1 +1,16 @@
-
+{
+    "nickname": "Sona",
+    "aliases": ["সোনা", "sona", "SONA", "Sona"],
+    "response_type": "romantic",
+    "enabled": true,
+    "priority": 4,
+    "responses_count": 10,
+    "random_response": true,
+    "mention_user": true,
+    "bangla_responses": 10,
+    "english_responses": 0,
+    "emoji_enabled": true,
+    "cooldown": 2,
+    "romantic_tone": true,
+    "affection_level": "high"
+}
