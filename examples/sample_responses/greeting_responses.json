@@ -1,0 +1,144 @@
+{
+    "sample_greeting_responses": {
+        "description": "Sample greeting responses for testing",
+        "version": "1.0.0",
+        "category": "greeting",
+        
+        "simple_greetings": [
+            "Hello!",
+            "Hi there!",
+            "Hey!",
+            "Greetings!",
+            "Welcome!"
+        ],
+        
+        "friendly_greetings": [
+            "Hello! How are you today?",
+            "Hi! Nice to see you!",
+            "Hey there! What's up?",
+            "Greetings! Hope you're doing well!",
+            "Welcome back! Missed you!"
+        ],
+        
+        "romantic_greetings": [
+            "Hello beautiful! 😘",
+            "Hi my love! 💖",
+            "Hey sweetheart! ❤️",
+            "Greetings my darling! 💕",
+            "Welcome my dear! 😊"
+        ],
+        
+        "time_based_greetings": {
+            "morning": [
+                "Good morning! ☀️",
+                "Morning sunshine! 🌞",
+                "Rise and shine! 😊"
+            ],
+            "afternoon": [
+                "Good afternoon! 🌤️",
+                "Afternoon greetings! ☕",
+                "Hope you're having a great day! 😄"
+            ],
+            "evening": [
+                "Good evening! 🌙",
+                "Evening! How was your day? 😊",
+                "Welcome to the evening! 🌆"
+            ],
+            "night": [
+                "Good night! 🌃",
+                "Sweet dreams! 💤",
+                "Sleep well! 😴"
+            ]
+        },
+        
+        "formal_greetings": [
+            "Greetings. How may I assist you?",
+            "Hello. I am at your service.",
+            "Good day. What can I do for you?"
+        ],
+        
+        "casual_greetings": [
+            "Yo! What's good?",
+            "Sup?",
+            "Howdy!",
+            "Wassup?",
+            "Heyo!"
+        ],
+        
+        "bangla_greetings": [
+            "হ্যালো! কেমন আছো?",
+            "সালাম! সব ভালো?",
+            "নমস্কার! আমি তোমার ক্রাশ বট!",
+            "হাই! আজকে কেমন যাচ্ছে?",
+            "ওহে! কথা বলতে ভালো লাগছে!"
+        ],
+        
+        "emoji_greetings": [
+            "👋 Hello!",
+            "🤗 Hi there!",
+            "😊 Hey!",
+            "✨ Greetings!",
+            "💖 Welcome!"
+        ],
+        
+        "personalized_greetings": [
+            "Hello {user}! Nice to see you!",
+            "Hi {user}! How have you been?",
+            "Hey {user}! Long time no see!",
+            "Greetings {user}! You look great today!",
+            "Welcome {user}! I was thinking about you!"
+        ],
+        
+        "contextual_greetings": {
+            "first_time": [
+                "Hello! I'm your crush bot! 😊",
+                "Hi! Nice to meet you! 💖",
+                "Hey! I'm here for you! ❤️"
+            ],
+            "returning_user": [
+                "Welcome back! I missed you! 💕",
+                "Hello again! So good to see you! 😘",
+                "Hey you're back! I was waiting! 😊"
+            ],
+            "frequent_user": [
+                "My favorite person is here! 💖",
+                "Hello my love! You make my day! 😘",
+                "Hey sweetheart! Always happy to see you! ❤️"
+            ]
+        },
+        
+        "special_occasion_greetings": {
+            "birthday": [
+                "Happy Birthday! 🎂🎉",
+                "Birthday greetings! 🥳🎁",
+                "Hope your birthday is amazing! 🎈🎊"
+            ],
+            "valentines": [
+                "Happy Valentine's Day! 💘🌹",
+                "Love is in the air! 💕😘",
+                "You're my Valentine! ❤️💌"
+            ],
+            "new_year": [
+                "Happy New Year! 🎆🎇",
+                "New year, new beginnings! 🥂✨",
+                "Best wishes for the new year! 🎊🎉"
+            ]
+        },
+        
+        "usage_notes": {
+            "selection": "Random selection recommended",
+            "personalization": "Use {user} variable for mentions",
+            "timing": "Consider time of day for relevance",
+            "context": "Use conversation history for better responses",
+            "testing": "Test all variations before deployment"
+        },
+        
+        "statistics_template": {
+            "total_uses": 0,
+            "success_rate": 0,
+            "user_feedback": {},
+            "most_popular": null,
+            "least_popular": null
+        }
+    }
+}
