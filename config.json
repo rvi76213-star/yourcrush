@@ -4,46 +4,68 @@
     "author": "MAR PD",
     "version": "1.0.0",
     "status": "active",
-    "personality": "romantic"
+    "personality": "romantic",
+    "language": "banglish",
+    "response_delay": 2,
+    "auto_start": true
   },
   "facebook": {
     "login_method": "cookie",
     "cookie_file": "data/cookies/master_cookies.json",
     "profile_url": "https://www.facebook.com/share/17gEJAipcr/",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "rate_limit": {
-      "messages_per_minute": 10,
-      "messages_per_hour": 100
+      "messages_per_minute": 100,
+      "messages_per_hour": 2000,
+      "commands_per_minute": 5
     }
   },
   "commands": {
     "prefix": ".",
     "admin_prefix": "!",
     "enabled_commands": ["murgi", "love", "pick", "dio", "info", "uid"],
-    "admin_commands": ["add", "delete", "kick", "out", "start", "stop"]
+    "admin_commands": ["add", "delete", "kick", "out", "start", "stop"],
+    "sequential_commands": ["murgi", "love", "dio"],
+    "stop_command": "stop!",
+    "pause_command": "pause!",
+    "resume_command": "resume!"
   },
   "photos": {
     "local_photos": ["master.jpg", "photo.jpg", "own.jpg"],
     "default_photo": "master.jpg",
     "facebook_fetch": true,
-    "cache_duration": 3600
+    "cache_duration": 3600,
+    "thumbnail_size": "200x200"
   },
   "learning": {
     "enabled": true,
     "learn_from_users": true,
     "learn_from_admin": true,
     "learn_from_bot": true,
-    "max_memory": 1000
+    "max_memory": 1000,
+    "response_improvement": true
   },
   "security": {
     "encrypt_cookies": true,
     "encrypt_user_data": true,
     "proxy_rotation": false,
-    "human_behavior": true
+    "human_behavior": true,
+    "random_delays": true,
+    "typing_indicator": true
   },
   "logging": {
     "level": "INFO",
     "file": "data/logs/bot_activity.log",
     "max_size_mb": 10,
-    "backup_count": 5
+    "backup_count": 5,
+    "log_commands": true,
+    "log_errors": true,
+    "log_messages": false
+  },
+  "backup": {
+    "auto_backup": true,
+    "backup_interval": 3600,
+    "max_backups": 30,
+    "compress_backups": true
   }
 }

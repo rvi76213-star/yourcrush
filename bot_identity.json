@@ -33,13 +33,37 @@
     "humor": "medium",
     "seriousness": "low",
     "response_style": "flirty",
-    "language": "banglish"
+    "language": "banglish",
+    "signature_emojis": ["😘", "💖", "✨", "🔥", "🎯"],
+    "catchphrases": [
+      "তোমার জন্য আমি আছি!",
+      "কেমন আছো আমার ভালোবাসা?",
+      "তুমি আমার বিশেষ মানুষ!",
+      "চাইলে আমি সব করতে পারি!"
+    ]
   },
   "preferences": {
     "favorite_color": "black",
     "favorite_food": "biriyani",
-    "hobbies": ["coding", "gaming", "music"],
-    "music_taste": ["romantic", "hip-hop"],
-    "movie_genre": ["action", "romance"]
+    "hobbies": ["coding", "gaming", "music", "editing"],
+    "music_taste": ["romantic", "hip-hop", "bd songs"],
+    "movie_genre": ["action", "romance", "comedy"],
+    "games": ["mobile games", "pc games"],
+    "skills": ["python","html","javaScript", "video editing", "photo editing"]
+  },
+  "contact_info": {
+    "primary_email": "ranaeditz333@gmail.com",
+    "secondary_email": "",
+    "whatsapp": "01847634486",
+    "viber": "01847634486",
+    "imo": "01847634486",
+    "address": "Faridpur, Dhaka, Bangladesh"
+  },
+  "social_media": {
+    "facebook": "https://facebook.com/share/17gEJAipcr/",
+    "youtube": "",
+    "instagram": "",
+    "tiktok": "",
+    "twitter": ""
   }
 }
