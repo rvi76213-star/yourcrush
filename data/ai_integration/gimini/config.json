@@ -1,1 +1,22 @@
-
+{
+    "enabled": false,
+    "api_key": "",
+    "model": "gemini-pro",
+    "max_output_tokens": 150,
+    "temperature": 0.7,
+    "safety_settings": {
+        "harassment": "block_none",
+        "hate_speech": "block_none",
+        "sexually_explicit": "block_none",
+        "dangerous_content": "block_none"
+    },
+    "response_formats": {
+        "bangla": true,
+        "english": true
+    },
+    "rate_limiting": {
+        "requests_per_minute": 15,
+        "max_concurrent": 3
+    },
+    "fallback_to_local": true
+}
