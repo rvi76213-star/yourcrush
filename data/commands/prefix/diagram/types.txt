@@ -1,0 +1,15 @@
+flowchart - Flowchart diagrams
+sequence - Sequence diagrams
+class - Class diagrams
+er - Entity-relationship diagrams
+usecase - Use case diagrams
+activity - Activity diagrams
+state - State diagrams
+component - Component diagrams
+deployment - Deployment diagrams
+object - Object diagrams
+package - Package diagrams
+timing - Timing diagrams
+communication - Communication diagrams
+interaction - Interaction overview diagrams
+composite - Composite structure diagrams

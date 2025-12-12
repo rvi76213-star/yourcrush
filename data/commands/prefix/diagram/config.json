@@ -1,1 +1,32 @@
-
+{
+    "name": "diagram",
+    "description": "📊 Create diagrams with smart features",
+    "version": "2.0.0",
+    "enabled": true,
+    "default_type": "flowchart",
+    "auto_generate": true,
+    "save_diagrams": true,
+    "output_format": "text",
+    "mention_user": true,
+    "supported_types": [
+        "flowchart",
+        "sequence",
+        "class",
+        "er",
+        "usecase",
+        "activity"
+    ],
+    "libraries": {
+        "mermaid": true,
+        "plantuml": false,
+        "graphviz": false
+    },
+    "theme": "default",
+    "style": "simple",
+    "response_formats": [
+        "📊 @{user} Creating {type} diagram...",
+        "🖼️ @{user} Your {type} diagram is ready!",
+        "🎨 @{user} Diagram generated: {type}"
+    ],
+    "auto_explain": true
+}
