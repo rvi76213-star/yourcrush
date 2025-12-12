@@ -1,0 +1,20 @@
+ADMIN/MODERATOR COMMAND: !uid
+
+Description: Get user ID
+
+Usage: !uid @username
+
+Parameters:
+  @username - User mention (required)
+
+Examples:
+  !uid @JohnDoe
+  !uid @JaneDoe
+  !uid @UnknownUser
+
+Notes:
+  - User must be mentioned with @
+  - Returns Facebook user ID
+  - Useful for admin operations
+  - Moderator+ permission required
+  - Privacy: Only shows to authorized users

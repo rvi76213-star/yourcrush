@@ -1,1 +1,20 @@
-
+{
+    "command": "uid",
+    "description": "🔢 Get user ID",
+    "version": "2.0.0",
+    "enabled": true,
+    "require_admin": false,
+    "min_permission": "moderator",
+    "response_format": "🔢 User ID for @{user}: {uid}",
+    "privacy": {
+        "hide_from_users": true,
+        "encrypt_in_logs": true,
+        "auto_delete_after": 60
+    },
+    "settings": {
+        "rate_limit": 10,
+        "cooldown": 5,
+        "audit_log": true,
+        "notify_user": false
+    }
+}
