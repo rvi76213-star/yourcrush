@@ -1,1 +1,29 @@
-
+{
+    "backups": [],
+    "statistics": {
+        "total_backups": 0,
+        "total_size_mb": 0,
+        "last_backup": null,
+        "failed_backups": 0,
+        "success_rate": 0
+    },
+    "settings": {
+        "auto_backup": true,
+        "backup_interval": 86400,
+        "max_backups": 30,
+        "backup_locations": ["local"],
+        "compression": true,
+        "encryption": true
+    },
+    "backup_items": [
+        "data/users/",
+        "data/learning/",
+        "data/commands/",
+        "data/json_responses/",
+        "data/ai_integration/",
+        "data/groups/",
+        "data/logs/",
+        "config.json",
+        "bot_identity.json"
+    ]
+}
