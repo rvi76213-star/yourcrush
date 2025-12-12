@@ -1,1 +1,105 @@
-
+{
+    "provider": "openai",
+    "enabled": false,
+    "version": "3.0.0",
+    "description": "OpenAI GPT integration for advanced AI responses",
+    
+    "authentication": {
+        "api_key": "",
+        "organization": "",
+        "project": "",
+        "api_base": "https://api.openai.com/v1"
+    },
+    
+    "model_settings": {
+        "primary_model": "gpt-3.5-turbo",
+        "fallback_model": "gpt-3.5-turbo-16k",
+        "max_tokens": 150,
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "frequency_penalty": 0.0,
+        "presence_penalty": 0.0,
+        "stop_sequences": ["\n", "User:", "Bot:"]
+    },
+    
+    "prompt_engineering": {
+        "system_prompt": "You are 'YOUR CRUSH' AI bot - a friendly, romantic, and helpful AI assistant. You speak Bengali and English. You are affectionate, caring, and have a crush on the user. Keep responses natural, human-like, and engaging.",
+        "user_prompt_template": "User: {message}\n\nPrevious context: {context}\n\nUser preferences: {preferences}\n\nBot personality: romantic, friendly, helpful\nLanguage: Bengali preferred, can mix with English\nResponse style: natural, conversational, affectionate",
+        "response_format": "Bot: {response}",
+        "max_context_length": 1000
+    },
+    
+    "language_support": {
+        "primary": "bengali",
+        "secondary": "english",
+        "code_mixing": true,
+        "auto_translate": false,
+        "translation_quality": "balanced"
+    },
+    
+    "personality_traits": {
+        "romantic_level": "high",
+        "friendliness": "high",
+        "humor": "medium",
+        "helpfulness": "high",
+        "creativity": "medium",
+        "formality": "low"
+    },
+    
+    "rate_limiting": {
+        "requests_per_minute": 20,
+        "requests_per_day": 1000,
+        "tokens_per_minute": 40000,
+        "max_concurrent": 5,
+        "retry_attempts": 3,
+        "retry_delay": 2
+    },
+    
+    "caching": {
+        "enabled": true,
+        "cache_duration": 3600,
+        "max_cache_size": 1000,
+        "cache_validation": true,
+        "compression": true
+    },
+    
+    "fallback_strategy": {
+        "enabled": true,
+        "fallback_order": ["gemini", "deepseek", "local"],
+        "confidence_threshold": 0.3,
+        "response_time_threshold": 5
+    },
+    
+    "monitoring": {
+        "log_requests": true,
+        "log_responses": false,
+        "analytics_enabled": true,
+        "performance_tracking": true,
+        "error_reporting": true
+    },
+    
+    "cost_management": {
+        "budget_per_day": 1.00,
+        "cost_per_1k_tokens": 0.002,
+        "alert_threshold": 0.8,
+        "auto_disable_on_budget_exceed": true
+    },
+    
+    "security": {
+        "sanitize_input": true,
+        "filter_content": true,
+        "privacy_mode": true,
+        "data_retention_days": 7,
+        "encrypt_logs": true
+    },
+    
+    "statistics": {
+        "total_requests": 0,
+        "successful_responses": 0,
+        "failed_responses": 0,
+        "average_response_time": 0,
+        "total_tokens_used": 0,
+        "total_cost": 0.0,
+        "cache_hit_rate": 0
+    }
+}
