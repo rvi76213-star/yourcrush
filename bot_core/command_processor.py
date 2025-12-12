@@ -245,7 +245,191 @@ class CommandProcessor:
             return None
     
     # ==================== PREFIX COMMAND HANDLERS ====================
+        def _handle_murgi_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
+        """Handle .murgi command with sequential execution and mentions"""
+        try:
+            # Check if murgi is already running
+            if self.murgi_execution["active"]:
+                return "🐔 Murgi command is already running! Use 'stop!' to stop."
+            
+            # Parse target user from mention
+            target_user_id = sender_id  # Default to sender
+            target_username = None
+            
+            # Check if there's a mention in args
+            if args:
+                # Try to extract user ID from mention
+                for arg in args:
+                    if arg.startswith('@'):
+                        # This is a mention, extract user ID
+                        mentioned_user = arg[1:]  # Remove @
+                        # In real implementation, you would map username to user ID
+                        # For now, we'll use a placeholder
+                        target_username = mentioned_user
+                        break
+            
+            # Get bot configuration
+            from config.bot_config import get_config_value
+            murgi_config = get_config_value("command_config.murgi", {})
+            
+            # Determine mention target
+            mention_target = murgi_config.get("mention_target", "user")
+            
+            # Start murgi execution in separate thread
+            self.murgi_execution["active"] = True
+            self.murgi_execution["paused"] = False
+            self.murgi_execution["target_user_id"] = target_user_id
+            self.murgi_execution["target_username"] = target_username
+            self.murgi_execution["original_sender"] = sender_id
+            self.murgi_execution["mention_target"] = mention_target
+            
+            # Start execution thread
+            thread = threading.Thread(
+                target=self._execute_murgi_sequence_with_mentions,
+                args=(sender_id, thread_id, target_user_id, target_username, mention_target),
+                daemon=True
+            )
+            
+            self.murgi_execution["thread"] = thread
+            thread.start()
+            
+            if target_username:
+                return f"🐔 Starting murgi sequence for @{target_username}... (Type 'stop!' to stop)"
+            else:
+                return "🐔 Starting murgi sequence... (Type 'stop!' to stop)"
+            
+        except Exception as e:
+            self.murgi_execution["active"] = False
+            self.logger.error(f"❌ Error in murgi command: {e}")
+            return f"❌ Murgi command error: {str(e)}"
     
+    def _execute_murgi_sequence_with_mentions(self, sender_id: str, thread_id: str, 
+                                            target_user_id: str, target_username: str,
+                                            mention_target: str):
+        """Execute murgi sequence with mentions"""
+        try:
+            murgi_folder = "data/commands/prefix/murgi/"
+            
+            # Version files to execute
+            version_files = ["v1.txt", "v2.txt", "v3.txt"]
+            
+            for version_file in version_files:
+                file_path = os.path.join(murgi_folder, version_file)
+                
+                if not os.path.exists(file_path):
+                    self.logger.warning(f"⚠️ Murgi file not found: {file_path}")
+                    continue
+                
+                # Read lines from file
+                with open(file_path, "r", encoding="utf-8") as f:
+                    lines = [line.strip() for line in f.readlines() if line.strip()]
+                
+                if not lines:
+                    continue
+                
+                # Update execution info
+                self.murgi_execution["current_file"] = version_file
+                self.murgi_execution["total_lines"] = len(lines)
+                
+                # Send each line with delay and mention
+                for i, line in enumerate(lines):
+                    # Check if stopped
+                    if not self.murgi_execution["active"]:
+                        break
+                    
+                    # Check if paused
+                    while self.murgi_execution["paused"] and self.murgi_execution["active"]:
+                        time.sleep(1)
+                    
+                    if not self.murgi_execution["active"]:
+                        break
+                    
+                    # Update current line
+                    self.murgi_execution["current_line"] = i + 1
+                    
+                    # Format message with mention
+                    final_message = self._format_murgi_message(
+                        line, 
+                        target_username, 
+                        mention_target,
+                        i + 1,
+                        len(lines)
+                    )
+                    
+                    # Send line (in real implementation, you would send via messenger)
+                    self.logger.info(f"🐔 Murgi line {i+1}/{len(lines)}: {final_message}")
+                    
+                    # In actual implementation, send via messenger
+                    # self.messenger.send_message(thread_id, final_message)
+                    
+                    # Wait before next line
+                    time.sleep(2)  # 2 second delay between lines
+                
+                # Wait between versions
+                if self.murgi_execution["active"] and version_file != version_files[-1]:
+                    time.sleep(5)  # 5 second delay between versions
+            
+            # Reset execution state
+            self.murgi_execution["active"] = False
+            self.murgi_execution["current_file"] = None
+            self.murgi_execution["current_line"] = 0
+            self.murgi_execution["total_lines"] = 0
+            self.murgi_execution["target_user_id"] = None
+            self.murgi_execution["target_username"] = None
+            
+            self.logger.info("✅ Murgi sequence completed!")
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error in murgi execution: {e}")
+            self.murgi_execution["active"] = False
+    
+    def _format_murgi_message(self, line: str, target_username: str, 
+                             mention_target: str, current_line: int, 
+                             total_lines: int) -> str:
+        """Format murgi message with mention"""
+        try:
+            from config.bot_config import get_config_value
+            
+            murgi_config = get_config_value("command_config.murgi", {})
+            mention_format = murgi_config.get("mention_format", "@{user} {message}")
+            mention_in_every = murgi_config.get("mention_in_every_message", True)
+            
+            # Add line number if configured
+            show_line_numbers = murgi_config.get("show_line_numbers", False)
+            if show_line_numbers:
+                line = f"{current_line}/{total_lines}. {line}"
+            
+            # Format based on mention target
+            if mention_target == "user" and target_username and mention_in_every:
+                return mention_format.format(user=target_username, message=line)
+            elif mention_target == "admin":
+                # Mention admin instead
+                admin_name = self._get_admin_name()
+                return mention_format.format(user=admin_name, message=line)
+            elif mention_target == "both" and target_username:
+                # Mention both user and admin
+                admin_name = self._get_admin_name()
+                return f"@{target_username} @{admin_name} {line}"
+            else:
+                # No mention
+                return line
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error formatting murgi message: {e}")
+            return line
+    
+    def _get_admin_name(self) -> str:
+        """Get admin name for mention"""
+        try:
+            # Load admin config
+            admin_file = "config/admin_config.py"
+            if os.path.exists(admin_file):
+                import config.admin_config as admin_config
+                admin_name = getattr(admin_config, "ADMIN_NAME", "Admin")
+                return admin_name
+            return "Admin"
+        except:
+            return "Admin"
     def _handle_murgi_command(self, args: List[str], sender_id: str, thread_id: str, is_group: bool) -> str:
         """Handle .murgi command with sequential execution"""
         try:
