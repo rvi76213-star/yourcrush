@@ -1,1 +1,23 @@
-
+{
+    "users": {},
+    "statistics": {
+        "total_users": 0,
+        "active_users": 0,
+        "new_users_today": 0,
+        "average_interactions": 0,
+        "most_active_user": null
+    },
+    "user_categories": {
+        "admin": [],
+        "premium": [],
+        "regular": [],
+        "new": [],
+        "inactive": []
+    },
+    "settings": {
+        "auto_create_profiles": true,
+        "profile_expiry_days": 365,
+        "backup_interval": 86400,
+        "privacy_enabled": true
+    }
+}

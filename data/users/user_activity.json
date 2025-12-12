@@ -1,0 +1,25 @@
+{
+    "activities": {},
+    "statistics": {
+        "total_activities": 0,
+        "activities_today": 0,
+        "average_activities_per_user": 0,
+        "most_active_hour": 0,
+        "peak_activity_time": null
+    },
+    "activity_types": {
+        "message_sent": 0,
+        "message_received": 0,
+        "command_executed": 0,
+        "photo_sent": 0,
+        "photo_received": 0,
+        "group_joined": 0,
+        "friend_added": 0
+    },
+    "settings": {
+        "log_all_activities": true,
+        "retention_days": 90,
+        "compress_old_logs": true,
+        "analytics_enabled": true
+    }
+}

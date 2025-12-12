@@ -1,0 +1,34 @@
+{
+    "default_settings": {
+        "notifications": {
+            "message_notifications": true,
+            "photo_notifications": true,
+            "command_notifications": true,
+            "group_notifications": false
+        },
+        "privacy": {
+            "profile_visible": true,
+            "activity_visible": true,
+            "allow_friend_requests": true,
+            "allow_messages": true
+        },
+        "preferences": {
+            "language": "bengali",
+            "theme": "dark",
+            "response_style": "normal",
+            "auto_download_photos": false
+        },
+        "chat_settings": {
+            "typing_indicator": true,
+            "read_receipts": true,
+            "auto_reply": false,
+            "response_delay": 2
+        }
+    },
+    "user_overrides": {},
+    "statistics": {
+        "users_with_custom_settings": 0,
+        "most_common_language": "bengali",
+        "most_common_theme": "dark"
+    }
+}
