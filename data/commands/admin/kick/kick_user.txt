@@ -1,0 +1,22 @@
+ADMIN COMMAND: !kick
+
+Description: Kick user from group
+
+Usage: !kick @username [reason] [duration]
+
+Parameters:
+  @username - User mention (required)
+  reason - Optional reason for kicking
+  duration - Optional duration in minutes (0 for permanent)
+
+Examples:
+  !kick @Spammer
+  !kick @RuleBreaker "Spamming" 60
+  !kick @Harasser "Harassment" 0
+
+Notes:
+  - User must be mentioned with @
+  - Duration 0 = permanent kick
+  - Bot must have admin privileges in group
+  - Kicked users can be re-invited
+  - Audit log is maintained

@@ -1,1 +1,26 @@
-
+{
+    "command": "kick",
+    "description": "👢 Kick user from group",
+    "version": "2.0.0",
+    "enabled": true,
+    "require_admin": true,
+    "group_only": true,
+    "bot_must_be_admin": true,
+    "confirmation_required": true,
+    "duration_options": {
+        "temporary": [5, 15, 30, 60, 1440],
+        "permanent": 0
+    },
+    "reasons": {
+        "spamming": "Excessive messages",
+        "harassment": "Harassing other users",
+        "rule_violation": "Breaking group rules",
+        "inappropriate": "Inappropriate content"
+    },
+    "settings": {
+        "notify_user": true,
+        "notify_group": false,
+        "audit_log": true,
+        "appeal_process": true
+    }
+}
