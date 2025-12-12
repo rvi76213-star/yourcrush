@@ -1,0 +1,20 @@
+ADMIN COMMAND: !out!admin
+
+Description: Bot leaves group in admin mode
+
+Usage: !out!admin [message]
+
+Parameters:
+  message - Optional farewell message
+
+Examples:
+  !out!admin
+  !out!admin "Admin leaving the group!"
+  !out!admin "Goodbye, I was the admin!"
+
+Notes:
+  - Bot leaves showing admin privileges
+  - Special admin farewell message
+  - Group admins are notified
+  - Audit log entry created
+  - Can only be used by bot admin

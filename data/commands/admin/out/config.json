@@ -1,1 +1,32 @@
-
+{
+    "command": "out",
+    "description": "🚪 Bot leaves group",
+    "version": "2.0.0",
+    "enabled": true,
+    "require_admin": true,
+    "group_only": true,
+    "variations": ["out", "out!admin"],
+    "admin_mode": {
+        "enabled": true,
+        "special_message": true,
+        "notify_admins": true
+    },
+    "farewell_messages": {
+        "regular": [
+            "Goodbye everyone! 👋",
+            "Leaving the group, bye! 🚪",
+            "It was nice chatting! 😊"
+        ],
+        "admin": [
+            "Admin leaving the group! 👑",
+            "Goodbye, I was your admin! 🏃‍♂️",
+            "Admin signing off! 📴"
+        ]
+    },
+    "settings": {
+        "save_group_data": true,
+        "send_farewell": true,
+        "delay_before_leaving": 3,
+        "can_return": true
+    }
+}
