@@ -1,0 +1,21 @@
+ADMIN COMMAND: !info bot
+
+Description: Get bot information
+
+Usage: !info bot [section]
+
+Parameters:
+  section - Optional section (status/stats/config)
+
+Examples:
+  !info bot
+  !info bot status
+  !info bot stats
+  !info bot config
+
+Notes:
+  - Without section: all information
+  - status: Current bot status
+  - stats: Usage statistics
+  - config: Configuration details
+  - Admin only command

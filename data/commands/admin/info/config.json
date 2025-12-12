@@ -1,26 +1,24 @@
 {
-    "command": "delete",
-    "description": "🗑️ Delete operations with safety measures",
+    "command": "info",
+    "description": "ℹ️ Get information",
     "version": "2.0.0",
-    "subcommands": ["user", "pick", "url", "message", "log"],
-    "require_admin": true,
-    "confirmation_required": true,
-    "confirmation_timeout": 30,
-    "audit_log": true,
-    "backup_before_delete": true,
-    "recycle_bin": true,
-    "retention_days": 30,
-    "safety_checks": {
-        "check_references": true,
-        "warn_if_active": true,
-        "notify_user": false,
-        "cooldown_period": 3600
+    "enabled": true,
+    "require_admin": false,
+    "min_permission": "user",
+    "subcommands": ["user", "bot", "group", "stats"],
+    "information_levels": {
+        "user": "basic",
+        "moderator": "extended",
+        "admin": "full"
     },
-    "permissions": {
-        "user": ["admin"],
-        "pick": ["admin", "moderator"],
-        "url": ["admin", "moderator"],
-        "message": ["admin", "moderator"],
-        "log": ["admin"]
+    "privacy": {
+        "hide_sensitive": true,
+        "respect_user_privacy": true,
+        "encrypt_ids": false
+    },
+    "formats": {
+        "user": "👤 User: {name}\n🆔 ID: {id}\n📅 Joined: {date}",
+        "bot": "🤖 Bot: {name}\n⚡ Status: {status}\n📊 Uptime: {uptime}",
+        "group": "👥 Group: {name}\n👥 Members: {count}\n📅 Created: {date}"
     }
 }

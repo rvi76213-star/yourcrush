@@ -1,0 +1,21 @@
+ADMIN COMMAND: !info user
+
+Description: Get user information
+
+Usage: !info user @username [details]
+
+Parameters:
+  @username - User mention (required)
+  details - Optional detail level (basic/full)
+
+Examples:
+  !info user @JohnDoe
+  !info user @JaneDoe full
+  !info user @AdminUser
+
+Notes:
+  - User must be mentioned with @
+  - Basic: Name, ID, join date
+  - Full: All available information
+  - Privacy settings respected
+  - Admin only sees all data
