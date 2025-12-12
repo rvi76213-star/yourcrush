@@ -4,10 +4,10 @@
 This directory contains temporary files used by the bot during operation.
 All files here are automatically managed by the bot and can be safely deleted.
 
-DIRECTORY STRUCTURE:
-├── cache/          - Temporary cache files
-├── downloads/      - Downloaded files (photos, media)
-└── uploads/        - Files to be uploaded
+- DIRECTORY STRUCTURE:
+- ├── cache/          - Temporary cache files
+- ├── downloads/      - Downloaded files (photos, media)
+- └── uploads/        - Files to be uploaded
 
 FILE TYPES:
 • .tmp - Temporary files
