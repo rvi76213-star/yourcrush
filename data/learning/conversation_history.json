@@ -1,0 +1,18 @@
+{
+    "max_conversations": 1000,
+    "max_messages_per_conversation": 100,
+    "conversations": {},
+    "statistics": {
+        "total_conversations": 0,
+        "total_messages": 0,
+        "active_conversations": 0,
+        "average_messages_per_conversation": 0,
+        "most_active_user": null
+    },
+    "settings": {
+        "store_conversations": true,
+        "encrypt_messages": false,
+        "auto_summarize": true,
+        "retention_days": 30
+    }
+}

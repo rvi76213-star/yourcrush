@@ -1,0 +1,29 @@
+{
+    "self_learning": {
+        "enabled": true,
+        "interactions": [],
+        "success_rate": 0,
+        "total_interactions": 0,
+        "successful_interactions": 0,
+        "failed_interactions": 0,
+        "learning_rate": 0.1
+    },
+    "memories": {
+        "important_events": [],
+        "user_preferences": {},
+        "conversation_patterns": {},
+        "response_improvements": []
+    },
+    "improvements": {
+        "response_time": 0,
+        "accuracy": 0,
+        "user_satisfaction": 0,
+        "learning_speed": 0
+    },
+    "settings": {
+        "max_memories": 1000,
+        "memory_expiry_days": 90,
+        "auto_cleanup": true,
+        "backup_interval": 86400
+    }
+}

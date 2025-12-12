@@ -1,0 +1,28 @@
+{
+    "admin_id": "1000123456789",
+    "knowledge_base": {
+        "commands": {},
+        "responses": {},
+        "patterns": {},
+        "preferences": {
+            "language": "bengali",
+            "style": "friendly",
+            "formality": "medium",
+            "humor_level": "high",
+            "response_speed": "normal"
+        }
+    },
+    "learned_from_admin": {
+        "total_interactions": 0,
+        "successful_responses": 0,
+        "failed_responses": 0,
+        "accuracy": 0
+    },
+    "admin_rules": {
+        "auto_learn": true,
+        "priority_learning": true,
+        "override_user_patterns": true,
+        "backup_knowledge": true
+    },
+    "timestamp": "2024-01-15T10:30:00"
+}

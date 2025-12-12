@@ -1,0 +1,25 @@
+{
+    "responses": [],
+    "categories": {
+        "greetings": [],
+        "farewells": [],
+        "questions": [],
+        "compliments": [],
+        "romantic": [],
+        "neutral": []
+    },
+    "statistics": {
+        "total_responses": 0,
+        "successful_responses": 0,
+        "failed_responses": 0,
+        "success_rate": 0,
+        "most_successful_category": null,
+        "least_successful_category": null
+    },
+    "learning_settings": {
+        "min_confidence": 0.7,
+        "max_responses_per_category": 100,
+        "auto_prune": true,
+        "test_new_responses": true
+    }
+}

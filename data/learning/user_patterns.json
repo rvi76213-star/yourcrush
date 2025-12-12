@@ -1,1 +1,121 @@
-
+{
+    "learning_system": {
+        "enabled": true,
+        "version": "3.0.0",
+        "description": "User behavior patterns and preferences learning",
+        "auto_learn": true,
+        "real_time_learning": true
+    },
+    
+    "users": {},
+    
+    "pattern_categories": {
+        "communication_style": {
+            "formal": 0,
+            "casual": 0,
+            "friendly": 0,
+            "romantic": 0,
+            "professional": 0
+        },
+        "language_preference": {
+            "bengali": 0,
+            "english": 0,
+            "mixed": 0,
+            "hindi": 0,
+            "other": 0
+        },
+        "response_timing": {
+            "immediate": 0,
+            "patient": 0,
+            "delayed": 0,
+            "random": 0
+        },
+        "topic_interests": {
+            "technology": 0,
+            "music": 0,
+            "movies": 0,
+            "sports": 0,
+            "food": 0,
+            "travel": 0,
+            "relationships": 0,
+            "entertainment": 0
+        },
+        "emotional_patterns": {
+            "happy": 0,
+            "sad": 0,
+            "angry": 0,
+            "excited": 0,
+            "neutral": 0
+        }
+    },
+    
+    "learning_parameters": {
+        "max_patterns_per_user": 100,
+        "pattern_expiry_days": 30,
+        "min_interactions_for_pattern": 3,
+        "confidence_threshold": 0.7,
+        "decay_rate": 0.95,
+        "reinforcement_factor": 1.2
+    },
+    
+    "pattern_extraction": {
+        "extract_keywords": true,
+        "identify_intent": true,
+        "detect_emotion": true,
+        "analyze_context": true,
+        "track_conversation_flow": true,
+        "identify_preferences": true
+    },
+    
+    "response_optimization": {
+        "personalize_responses": true,
+        "adapt_tone": true,
+        "use_preferred_language": true,
+        "reference_past_conversations": true,
+        "anticipate_needs": true,
+        "avoid_repetition": true
+    },
+    
+    "privacy_settings": {
+        "anonymize_data": true,
+        "encrypt_sensitive": true,
+        "user_consent_required": false,
+        "data_retention_days": 90,
+        "allow_data_deletion": true
+    },
+    
+    "analytics": {
+        "pattern_effectiveness": {},
+        "user_engagement": {},
+        "learning_progress": {},
+        "accuracy_metrics": {},
+        "improvement_tracking": {}
+    },
+    
+    "maintenance": {
+        "auto_cleanup": true,
+        "cleanup_interval": 86400,
+        "backup_before_cleanup": true,
+        "compress_data": true,
+        "optimize_storage": true
+    },
+    
+    "statistics": {
+        "total_users": 0,
+        "active_users": 0,
+        "total_patterns": 0,
+        "patterns_learned_today": 0,
+        "average_patterns_per_user": 0,
+        "learning_accuracy": 0,
+        "user_satisfaction": 0,
+        "most_common_pattern": null,
+        "last_learning_update": null
+    },
+    
+    "export_settings": {
+        "allow_export": true,
+        "export_format": "json",
+        "include_metadata": true,
+        "exclude_sensitive": true
+    }
+}
