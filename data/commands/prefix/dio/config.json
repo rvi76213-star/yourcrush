@@ -1,1 +1,22 @@
-
+{
+    "name": "dio",
+    "description": "🦸‍♂️ DIO character lines with mentions",
+    "version": "2.0.0",
+    "enabled": true,
+    "character": "Dio Brando",
+    "anime": "JoJo's Bizarre Adventure",
+    "random_line": true,
+    "mention_user": true,
+    "special_commands": {
+        "wrry": "WRYYYYYYYY! @{user}",
+        "world": "ZA WARUDO! @{user}",
+        "muda": "MUDA MUDA MUDA! @{user}",
+        "roadaroller": "ROADA ROLLA DA! @{user}",
+        "ora": "ORA ORA ORA ORA! @{user}"
+    },
+    "cooldown": 5,
+    "voice_enabled": false,
+    "sound_effects": false,
+    "emojis_enabled": true,
+    "bangla_translation": false
+}
