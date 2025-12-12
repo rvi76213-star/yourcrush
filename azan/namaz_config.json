@@ -1,0 +1,76 @@
+{
+    "learning_mode": {
+        "enabled": true,
+        "step_by_step_guide": true,
+        "video_tutorials": false,
+        "audio_guidance": false,
+        "practice_mode": true
+    },
+    "content_language": "bangla",
+    "difficulty_level": "beginner",
+    "sections": {
+        "basics": true,
+        "wudu": true,
+        "prayer_times": true,
+        "rakats": true,
+        "surahs": true,
+        "duas": true,
+        "common_mistakes": true,
+        "faq": true
+    },
+    "interactive_features": {
+        "quiz": true,
+        "progress_tracking": true,
+        "certificate": false,
+        "reminders": true
+    },
+    "display_settings": {
+        "show_arabic": true,
+        "show_transliteration": true,
+        "show_translation": true,
+        "show_audio": false,
+        "animations": true
+    },
+    "surah_list": [
+        "Al-Fatihah",
+        "Al-Ikhlas",
+        "Al-Falaq",
+        "An-Nas",
+        "Al-Kawthar",
+        "Al-Asr",
+        "Al-Qadr"
+    ],
+    "essential_duas": [
+        "Dua after wudu",
+        "Dua when starting prayer",
+        "Dua in ruku",
+        "Dua in sujood",
+        "Dua between two sujoods",
+        "Tashahhud",
+        "Durood Ibrahim",
+        "Dua after prayer"
+    ],
+    "common_mistakes": {
+        "wudu_mistakes": true,
+        "posture_mistakes": true,
+        "recitation_mistakes": true,
+        "timing_mistakes": true,
+        "concentration_mistakes": true
+    },
+    "progress_tracking": {
+        "save_progress": true,
+        "show_stats": true,
+        "milestones": [
+            "Learn wudu",
+            "Learn 1st rakat",
+            "Complete 1 prayer",
+            "Learn all 5 prayers",
+            "Memorize 5 surahs"
+        ]
+    },
+    "sharing_features": {
+        "share_progress": true,
+        "invite_friends": true,
+        "group_learning": false
+    }
+}

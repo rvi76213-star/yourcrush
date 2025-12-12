@@ -1,0 +1,113 @@
+{
+    "system": {
+        "name": "YOUR CRUSH AI BOT",
+        "version": "2.0.0",
+        "developer": "MAR PD (RANA)",
+        "contact": {
+            "telegram": "@rana_editz_00",
+            "phone": "01847634486",
+            "email": "ranaeditz333@gmail.com"
+        },
+        "maintenance_mode": false,
+        "auto_update": true,
+        "debug_mode": false
+    },
+    "azan_system": {
+        "enabled": true,
+        "auto_start": true,
+        "default_city": "Dhaka",
+        "update_interval": 3600,
+        "notify_on_start": true,
+        "log_level": "info"
+    },
+    "prayer_times": {
+        "calculation_method": "Karachi",
+        "asr_method": "Standard",
+        "adjust_high_latitudes": "AngleBased",
+        "midnight_method": "Standard",
+        "time_format": "24h"
+    },
+    "notification_settings": {
+        "enable_push": true,
+        "enable_sound": false,
+        "vibrate": false,
+        "led_color": "blue",
+        "priority": "high"
+    },
+    "reminder_settings": {
+        "enable_reminders": true,
+        "reminder_before": 10,
+        "enable_jummah_reminder": true,
+        "jummah_reminder_time": "11:30",
+        "enable_ramadan_reminders": false
+    },
+    "ui_settings": {
+        "theme": "dark",
+        "language": "bangla",
+        "font_size": "medium",
+        "show_hijri_date": true,
+        "animations": true,
+        "compact_mode": false
+    },
+    "data_management": {
+        "auto_backup": true,
+        "backup_interval": 86400,
+        "max_backups": 30,
+        "sync_to_cloud": false,
+        "encrypt_data": true
+    },
+    "integration_settings": {
+        "enable_facebook": true,
+        "enable_telegram": false,
+        "enable_whatsapp": false,
+        "api_enabled": false,
+        "webhook_url": ""
+    },
+    "security_settings": {
+        "require_auth": true,
+        "encrypt_cookies": true,
+        "rate_limit": true,
+        "max_requests_per_minute": 60,
+        "block_suspicious": true
+    },
+    "performance_settings": {
+        "cache_enabled": true,
+        "cache_duration": 300,
+        "preload_data": true,
+        "optimize_images": true,
+        "memory_limit": "512MB"
+    },
+    "logging_settings": {
+        "log_level": "info",
+        "log_to_file": true,
+        "log_to_console": true,
+        "max_log_size": "10MB",
+        "keep_logs_days": 30
+    },
+    "advanced_settings": {
+        "experimental_features": false,
+        "developer_mode": false,
+        "custom_scripts": false,
+        "web_interface": false,
+        "api_documentation": false
+    },
+    "subscription_plans": {
+        "free": {
+            "max_users": 100,
+            "max_groups": 10,
+            "features": ["basic_azan", "prayer_times", "basic_guide"]
+        },
+        "premium": {
+            "max_users": 1000,
+            "max_groups": 100,
+            "features": ["all_azan", "advanced_guide", "custom_notifications", "priority_support"]
+        }
+    },
+    "version_info": {
+        "current_version": "2.0.0",
+        "minimum_version": "1.5.0",
+        "last_update": "2024-01-15",
+        "changelog_url": "https://example.com/changelog",
+        "update_url": "https://example.com/update"
+    }
+}

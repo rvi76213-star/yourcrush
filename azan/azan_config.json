@@ -1,0 +1,51 @@
+{
+    "enabled": true,
+    "city": "Dhaka",
+    "calculation_method": "Karachi",
+    "auto_notify": true,
+    "notify_before_minutes": 10,
+    "voice_reminder": false,
+    "group_notifications": true,
+    "individual_notifications": true,
+    "notify_users": ["all"],
+    "hijri_date_enabled": true,
+    "ramadan_mode": false,
+    "special_reminders": {
+        "jummah": true,
+        "tahajjud": false,
+        "tarawih": false,
+        "sehri": false,
+        "iftar": false
+    },
+    "notification_messages": {
+        "azan": "🕌 {{prayer_name}} এর আজানের সময় হয়েছে!",
+        "reminder": "⏰ {{minutes_before}} মিনিট পর {{prayer_name}} এর আজান!",
+        "jummah": "📅 আজ শুক্রবার! জুমার নামাজের জন্য প্রস্তুতি নিন।"
+    },
+    "api_settings": {
+        "use_api": false,
+        "api_url": "http://api.aladhan.com/v1/timingsByCity",
+        "fallback_local": true
+    },
+    "advanced_settings": {
+        "time_adjustment": 0,
+        "dhuhr_minutes_after_noon": 2,
+        "asr_method": "Standard",
+        "high_latitude_method": "AngleBased",
+        "midnight_method": "Standard",
+        "imsak_minutes_before_fajr": 10,
+        "format": "24h"
+    },
+    "subscription_settings": {
+        "auto_subscribe_new_groups": true,
+        "auto_subscribe_new_users": false,
+        "allow_unsubscribe": true,
+        "broadcast_to_all": false
+    },
+    "log_settings": {
+        "log_notifications": true,
+        "log_errors": true,
+        "save_daily_times": true,
+        "backup_frequency": "weekly"
+    }
+}
