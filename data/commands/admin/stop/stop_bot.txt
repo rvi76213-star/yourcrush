@@ -1,0 +1,22 @@
+ADMIN COMMAND: !stop
+
+Description: Stop bot or current operations
+
+Usage: !stop [feature] [reason]
+
+Parameters:
+  feature - What to stop (bot, command, auto, all)
+  reason - Optional reason
+
+Examples:
+  !stop
+  !stop bot
+  !stop command "murgi"
+  !stop all "Maintenance"
+
+Notes:
+  - Without parameter: stops current command
+  - "bot": stops entire bot
+  - "command [name]": stops specific command
+  - "auto": stops auto-features
+  - "all": stops everything

@@ -1,1 +1,25 @@
-
+{
+    "command": "stop",
+    "description": "⏹️ Stop bot features",
+    "version": "2.0.0",
+    "enabled": true,
+    "require_admin": true,
+    "subcommands": ["bot", "command", "auto", "all"],
+    "stop_levels": {
+        "command": "Stops current command",
+        "bot": "Stops entire bot",
+        "auto": "Stops auto-features",
+        "all": "Stops everything"
+    },
+    "confirmation": {
+        "required": true,
+        "timeout": 30,
+        "message": "Are you sure you want to stop?"
+    },
+    "settings": {
+        "graceful_shutdown": true,
+        "save_state": true,
+        "notify_users": false,
+        "auto_restart": false
+    }
+}
