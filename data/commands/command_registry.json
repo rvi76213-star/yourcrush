@@ -1,0 +1,169 @@
+{
+    "version": "2.0.0",
+    "last_updated": "2024-01-15",
+    "total_commands": 42,
+    "enabled": true,
+    "commands": {
+        "prefix": {
+            "murgi": {
+                "path": "data/commands/prefix/murgi/",
+                "description": "মুরগি সিকোয়েন্স",
+                "cooldown": 30,
+                "permission": "user",
+                "enabled": true,
+                "versions": ["v1", "v2", "v3"]
+            },
+            "love": {
+                "path": "data/commands/prefix/love/",
+                "description": "রোমান্টিক রেস্পন্স",
+                "cooldown": 10,
+                "permission": "user",
+                "enabled": true
+            },
+            "pick": {
+                "path": "data/commands/prefix/pick/",
+                "description": "র্যান্ডম সিলেকশন",
+                "cooldown": 5,
+                "permission": "user",
+                "enabled": true
+            },
+            "dio": {
+                "path": "data/commands/prefix/dio/",
+                "description": "DIO স্পেশাল",
+                "cooldown": 15,
+                "permission": "user",
+                "enabled": true
+            },
+            "diagram": {
+                "path": "data/commands/prefix/diagram/",
+                "description": "ডায়াগ্রাম জেনারেটর",
+                "cooldown": 20,
+                "permission": "user",
+                "enabled": true
+            },
+            "info": {
+                "path": "data/commands/prefix/info/",
+                "description": "ইনফরমেশন",
+                "cooldown": 5,
+                "permission": "user",
+                "enabled": true
+            },
+            "uid": {
+                "path": "data/commands/prefix/uid/",
+                "description": "ইউজার আইডি",
+                "cooldown": 5,
+                "permission": "user",
+                "enabled": true
+            },
+            "Ln": {
+                "path": "data/commands/prefix/Ln/",
+                "description": "লাইন নাম্বার",
+                "cooldown": 5,
+                "permission": "user",
+                "enabled": true
+            }
+        },
+        "admin": {
+            "add": {
+                "path": "data/commands/admin/add/",
+                "description": "যোগ করুন",
+                "cooldown": 2,
+                "permission": "admin",
+                "enabled": true
+            },
+            "delete": {
+                "path": "data/commands/admin/delete/",
+                "description": "মুছুন",
+                "cooldown": 2,
+                "permission": "admin",
+                "enabled": true
+            },
+            "kick": {
+                "path": "data/commands/admin/kick/",
+                "description": "বের করুন",
+                "cooldown": 2,
+                "permission": "admin",
+                "enabled": true
+            },
+            "out": {
+                "path": "data/commands/admin/out/",
+                "description": "বাহির",
+                "cooldown": 60,
+                "permission": "admin",
+                "enabled": true
+            },
+            "start": {
+                "path": "data/commands/admin/start/",
+                "description": "শুরু",
+                "cooldown": 5,
+                "permission": "admin",
+                "enabled": true
+            },
+            "stop": {
+                "path": "data/commands/admin/stop/",
+                "description": "বন্ধ",
+                "cooldown": 2,
+                "permission": "admin",
+                "enabled": true
+            },
+            "info": {
+                "path": "data/commands/admin/info/",
+                "description": "ইনফো",
+                "cooldown": 5,
+                "permission": "admin",
+                "enabled": true
+            },
+            "uid": {
+                "path": "data/commands/admin/uid/",
+                "description": "UID",
+                "cooldown": 5,
+                "permission": "admin",
+                "enabled": true
+            }
+        },
+        "nicknames": {
+            "Bot": {
+                "path": "data/commands/nicknames/Bot/",
+                "description": "বট রেস্পন্স",
+                "cooldown": 3,
+                "permission": "user",
+                "enabled": true
+            },
+            "bow": {
+                "path": "data/commands/nicknames/bow/",
+                "description": "bow রেস্পন্স",
+                "cooldown": 3,
+                "permission": "user",
+                "enabled": true
+            },
+            "Jan": {
+                "path": "data/commands/nicknames/Jan/",
+                "description": "Jan রেস্পন্স",
+                "cooldown": 3,
+                "permission": "user",
+                "enabled": true
+            },
+            "Sona": {
+                "path": "data/commands/nicknames/Sona/",
+                "description": "Sona রেস্পন্স",
+                "cooldown": 3,
+                "permission": "user",
+                "enabled": true
+            },
+            "Baby": {
+                "path": "data/commands/nicknames/Baby/",
+                "description": "Baby রেস্পন্স",
+                "cooldown": 3,
+                "permission": "user",
+                "enabled": true
+            }
+        }
+    },
+    "statistics": {
+        "total_uses": 1250,
+        "most_used": "murgi",
+        "least_used": "diagram",
+        "success_rate": 98.5,
+        "error_count": 19
+    }
+}

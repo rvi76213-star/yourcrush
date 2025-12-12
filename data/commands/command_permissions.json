@@ -1,0 +1,78 @@
+{
+    "version": "2.0.0",
+    "permission_levels": {
+        "user": {
+            "description": "সাধারণ ইউজার",
+            "level": 1,
+            "allowed_commands": [
+                "murgi", "love", "pick", "dio", "diagram", "info", "uid", "Ln",
+                "Bot", "bow", "Jan", "Sona", "Baby",
+                "azan", "next", "hijri", "jummah", "subscribe"
+            ]
+        },
+        "admin": {
+            "description": "এডমিন",
+            "level": 2,
+            "allowed_commands": [
+                "add", "delete", "kick", "out", "start", "stop", "info", "uid"
+            ],
+            "inherits": ["user"]
+        },
+        "owner": {
+            "description": "মালিক",
+            "level": 3,
+            "allowed_commands": ["*"],
+            "inherits": ["admin", "user"]
+        }
+    },
+    "user_permissions": {
+        "1000123456789": {
+            "level": "owner",
+            "name": "RANA",
+            "granted_by": "system",
+            "granted_date": "2024-01-01"
+        }
+    },
+    "group_permissions": {
+        "1234567890123456": {
+            "allowed_commands": ["murgi", "love", "pick", "info"],
+            "restricted_commands": ["add", "delete", "kick"],
+            "admin_users": ["1000123456789"]
+        }
+    },
+    "command_restrictions": {
+        "murgi": {
+            "cooldown": 30,
+            "max_uses_per_hour": 10,
+            "require_approval": false
+        },
+        "add": {
+            "cooldown": 2,
+            "max_uses_per_hour": 5,
+            "require_approval": false,
+            "allowed_groups": ["*"]
+        },
+        "kick": {
+            "cooldown": 5,
+            "max_uses_per_hour": 3,
+            "require_approval": true,
+            "allowed_groups": ["admin_groups"]
+        }
+    },
+    "time_based_restrictions": {
+        "night_mode": {
+            "enabled": true,
+            "start_time": "23:00",
+            "end_time": "06:00",
+            "restricted_commands": ["murgi", "photo"],
+            "allowed_commands": ["info", "help"]
+        },
+        "jummah": {
+            "enabled": true,
+            "day": "friday",
+            "time": "12:00-14:00",
+            "restricted_commands": [],
+            "special_commands": ["jummah", "prayer"]
+        }
+    }
+}
