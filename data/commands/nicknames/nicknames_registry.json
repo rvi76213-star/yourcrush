@@ -1,0 +1,70 @@
+{
+    "nicknames": {
+        "Bot": {
+            "enabled": true,
+            "type": "direct",
+            "responses_count": 15,
+            "mention_user": true,
+            "priority": 1,
+            "usage_count": 0,
+            "last_used": null,
+            "users": []
+        },
+        "bow": {
+            "enabled": true,
+            "type": "respectful",
+            "responses_count": 10,
+            "mention_user": true,
+            "priority": 2,
+            "usage_count": 0,
+            "last_used": null,
+            "users": []
+        },
+        "Jan": {
+            "enabled": true,
+            "type": "friendly",
+            "responses_count": 10,
+            "mention_user": true,
+            "priority": 3,
+            "usage_count": 0,
+            "last_used": null,
+            "users": []
+        },
+        "Sona": {
+            "enabled": true,
+            "type": "romantic",
+            "responses_count": 10,
+            "mention_user": true,
+            "priority": 4,
+            "usage_count": 0,
+            "last_used": null,
+            "users": []
+        },
+        "Baby": {
+            "enabled": true,
+            "type": "cute",
+            "responses_count": 10,
+            "mention_user": true,
+            "priority": 5,
+            "usage_count": 0,
+            "last_used": null,
+            "users": []
+        }
+    },
+    "statistics": {
+        "total_nicknames": 5,
+        "total_responses": 55,
+        "active_nicknames": 5,
+        "total_mentions": 0,
+        "most_used_nickname": null,
+        "least_used_nickname": null
+    },
+    "settings": {
+        "case_sensitive": false,
+        "auto_learn_new_nicknames": false,
+        "response_cooldown": 2,
+        "allow_custom_responses": false,
+        "max_nicknames_per_user": 3,
+        "nickname_blacklist": []
+    }
+}
