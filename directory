@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+📁 Create all required directories
+"""
+
+import os
+
+# Directories to create
+directories = [
+    "temp/cache/",
+    "temp/downloads/", 
+    "temp/uploads/",
+    "examples/sample_commands/",
+    "examples/sample_responses/",
+    "examples/sample_configs/",
+    "examples/sample_photos/"
+]
+
+def create_directories():
+    """Create all required directories"""
+    print("📁 Creating directories...")
+    
+    for directory in directories:
+        try:
+            os.makedirs(directory, exist_ok=True)
+            print(f"✅ Created: {directory}")
+        except Exception as e:
+            print(f"❌ Error creating {directory}: {e}")
+    
+    print("✅ All directories created successfully!")
+
+if __name__ == "__main__":
+    create_directories()
