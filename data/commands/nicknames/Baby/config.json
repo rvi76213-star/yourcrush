@@ -1,1 +1,16 @@
-
+{
+    "nickname": "Baby",
+    "aliases": ["বেবি", "baby", "BABY", "Baby"],
+    "response_type": "cute",
+    "enabled": true,
+    "priority": 5,
+    "responses_count": 10,
+    "random_response": true,
+    "mention_user": true,
+    "bangla_responses": 10,
+    "english_responses": 0,
+    "emoji_enabled": true,
+    "cooldown": 2,
+    "cute_tone": true,
+    "affection_level": "very_high"
+}
