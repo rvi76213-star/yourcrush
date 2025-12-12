@@ -5,5 +5,5 @@
 ### 1. Download & Extract
 ```bash
 # Download the project
-git clone https://github.com/master-pd/yourcrush.git
+git clone <your-repo-url>
 cd YOUR_CRUSH_BOT
