@@ -5,7 +5,7 @@
 ADMIN_CONFIG = {
     # Admin Users
     "admins": {
-        "super_admins": ["1000123456789"],  # Your Facebook ID
+        "super_admins": ["61578706761898"],  # Your Facebook ID
         "admins": [],  # Additional admin IDs
         "moderators": [],  # Moderator IDs
         "trusted_users": []  # Trusted user IDs
