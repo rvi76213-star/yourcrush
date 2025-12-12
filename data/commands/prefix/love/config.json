@@ -1,1 +1,25 @@
-
+{
+    "name": "love",
+    "description": "💖 Romantic messages with mentions",
+    "version": "2.0.0",
+    "enabled": true,
+    "response_count": 5,
+    "random_response": true,
+    "mention_user": true,
+    "allow_group": true,
+    "cooldown": 10,
+    "emoji_enabled": true,
+    "bangla_responses": true,
+    "english_responses": true,
+    "mixed_language": true,
+    "special_occasions": {
+        "valentines": true,
+        "birthday": true,
+        "anniversary": true
+    },
+    "response_formats": [
+        "{emoji} @{user} {message}",
+        "@{user} {emoji} {message}",
+        "{message} {emoji} @{user}"
+    ]
+}
