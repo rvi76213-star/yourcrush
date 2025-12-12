@@ -1,0 +1,82 @@
+{
+    "commands": {
+        "add": {
+            "description": "➕ Add items to database",
+            "usage": "!add [type] [parameters]",
+            "subcommands": ["user", "pick", "url", "command", "response"],
+            "permission": "admin",
+            "cooldown": 5,
+            "log": true
+        },
+        "delete": {
+            "description": "🗑️ Delete items from database",
+            "usage": "!delete [type] [parameters]",
+            "subcommands": ["user", "pick", "url", "message", "log"],
+            "permission": "admin",
+            "cooldown": 10,
+            "requires_confirmation": true
+        },
+        "kick": {
+            "description": "👢 Kick user from group",
+            "usage": "!kick @username [reason]",
+            "permission": "admin",
+            "cooldown": 30,
+            "group_only": true
+        },
+        "out": {
+            "description": "🚪 Bot leaves group",
+            "usage": "!out [admin]",
+            "permission": "admin",
+            "cooldown": 60,
+            "group_only": true,
+            "variations": ["out", "out!admin"]
+        },
+        "start": {
+            "description": "🚀 Start bot features",
+            "usage": "!start [feature]",
+            "permission": "admin",
+            "cooldown": 10,
+            "subcommands": ["live", "bot", "auto", "schedule"]
+        },
+        "stop": {
+            "description": "⏹️ Stop bot features",
+            "usage": "!stop [feature]",
+            "permission": "admin",
+            "cooldown": 5,
+            "subcommands": ["bot", "command", "auto", "all"]
+        },
+        "info": {
+            "description": "ℹ️ Get information",
+            "usage": "!info [type]",
+            "permission": "moderator",
+            "cooldown": 5,
+            "subcommands": ["user", "bot", "group", "stats"]
+        },
+        "uid": {
+            "description": "🔢 Get user ID",
+            "usage": "!uid @username",
+            "permission": "moderator",
+            "cooldown": 5
+        }
+    },
+    "permissions": {
+        "admin": ["add", "delete", "kick", "out", "start", "stop", "info", "uid"],
+        "moderator": ["kick", "info", "uid"],
+        "premium": ["info"],
+        "user": []
+    },
+    "statistics": {
+        "total_commands": 8,
+        "active": true,
+        "last_used": null,
+        "usage_count": 0
+    },
+    "settings": {
+        "command_prefix": "!",
+        "case_sensitive": false,
+        "log_all_commands": true,
+        "notify_admin": true,
+        "auto_complete": true,
+        "help_enabled": true
+    }
+}
