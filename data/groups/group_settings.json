@@ -1,0 +1,37 @@
+{
+    "default_settings": {
+        "bot_behavior": {
+            "auto_reply": true,
+            "reply_to_mentions": true,
+            "reply_to_all": false,
+            "send_welcome_message": true,
+            "send_goodbye_message": true,
+            "share_content": false,
+            "auto_react": false
+        },
+        "message_settings": {
+            "response_delay": 3,
+            "max_messages_per_hour": 20,
+            "min_message_interval": 10,
+            "allow_commands": true,
+            "allow_photos": true,
+            "allow_links": true
+        },
+        "content_filter": {
+            "filter_profanity": true,
+            "filter_spam": true,
+            "filter_links": false,
+            "require_admin_approval": false
+        },
+        "admin_settings": {
+            "admin_commands_only": false,
+            "notify_admins": true,
+            "log_all_messages": false
+        }
+    },
+    "group_overrides": {},
+    "statistics": {
+        "groups_with_custom_settings": 0,
+        "most_common_setting": "default"
+    }
+}

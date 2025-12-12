@@ -1,0 +1,21 @@
+{
+    "groups": {},
+    "statistics": {
+        "total_members": 0,
+        "average_members_per_group": 0,
+        "largest_group_members": 0,
+        "most_active_group": null
+    },
+    "member_roles": {
+        "admin": 0,
+        "moderator": 0,
+        "member": 0,
+        "restricted": 0
+    },
+    "settings": {
+        "auto_update_members": true,
+        "cache_member_info": true,
+        "backup_interval": 86400,
+        "privacy_enabled": true
+    }
+}

@@ -1,1 +1,23 @@
-
+{
+    "groups": {},
+    "statistics": {
+        "total_groups": 0,
+        "active_groups": 0,
+        "joined_groups": 0,
+        "average_members": 0,
+        "largest_group": null
+    },
+    "group_categories": {
+        "friends": [],
+        "family": [],
+        "work": [],
+        "hobby": [],
+        "other": []
+    },
+    "settings": {
+        "auto_join_groups": false,
+        "max_groups": 50,
+        "backup_interval": 86400,
+        "monitor_activity": true
+    }
+}
