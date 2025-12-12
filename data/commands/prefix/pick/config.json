@@ -1,1 +1,32 @@
-
+{
+    "name": "pick",
+    "description": "🎯 Random selection with smart picks",
+    "version": "2.0.0",
+    "enabled": true,
+    "max_picks": 10,
+    "min_picks": 1,
+    "default_picks": 1,
+    "allow_custom": true,
+    "random_order": true,
+    "mention_user": true,
+    "categories": {
+        "food": true,
+        "drinks": true,
+        "movies": true,
+        "games": true,
+        "places": true,
+        "bengali_food": true
+    },
+    "formats": [
+        "🎯 @{user} Selected: {item}",
+        "✨ @{user} Pick: {item}",
+        "✅ @{user} Choice: {item}",
+        "🌟 @{user} Result: {item}",
+        "🔮 @{user} Your pick: {item}"
+    ],
+    "smart_picks": {
+        "enabled": true,
+        "learn_preferences": true,
+        "avoid_repeats": true
+    }
+}
