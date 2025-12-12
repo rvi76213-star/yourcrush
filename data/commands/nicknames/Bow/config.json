@@ -1,1 +1,16 @@
-
+{
+    "nickname": "bow",
+    "aliases": ["বাউ", "bow", "BOW", "Bow"],
+    "response_type": "direct",
+    "enabled": true,
+    "priority": 2,
+    "responses_count": 10,
+    "random_response": true,
+    "mention_user": true,
+    "bangla_responses": 8,
+    "english_responses": 2,
+    "emoji_enabled": true,
+    "cooldown": 2,
+    "formal_tone": true,
+    "respect_level": "high"
+}
