@@ -1,0 +1,119 @@
+{
+    "commands": {
+        "murgi": {
+            "enabled": true,
+            "description": "🐔 Sequential chicken messages with mentions",
+            "usage": ".murgi [@username]",
+            "category": "fun",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 30,
+            "mention_support": true,
+            "sequential": true,
+            "version": "2.0.0"
+        },
+        "love": {
+            "enabled": true,
+            "description": "💖 Romantic messages with mentions",
+            "usage": ".love [@username]",
+            "category": "romantic",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 10,
+            "mention_support": true,
+            "sequential": false,
+            "version": "2.0.0"
+        },
+        "pick": {
+            "enabled": true,
+            "description": "🎯 Random selection with mentions",
+            "usage": ".pick [number] [@username]",
+            "category": "utility",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 5,
+            "mention_support": true,
+            "sequential": false,
+            "version": "2.0.0"
+        },
+        "dio": {
+            "enabled": true,
+            "description": "🦸‍♂️ DIO character lines with mentions",
+            "usage": ".dio [@username]",
+            "category": "fun",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 5,
+            "mention_support": true,
+            "sequential": false,
+            "version": "2.0.0"
+        },
+        "diagram": {
+            "enabled": true,
+            "description": "📊 Create diagrams with mentions",
+            "usage": ".diagram [type] [@username]",
+            "category": "utility",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 10,
+            "mention_support": true,
+            "sequential": false,
+            "version": "2.0.0"
+        },
+        "info": {
+            "enabled": true,
+            "description": "🤖 Bot information",
+            "usage": ".info",
+            "category": "info",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 5,
+            "mention_support": false,
+            "sequential": false,
+            "version": "1.0.0"
+        },
+        "uid": {
+            "enabled": true,
+            "description": "🔢 User ID lookup",
+            "usage": ".uid [@mention]",
+            "category": "info",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 5,
+            "mention_support": true,
+            "sequential": false,
+            "version": "1.0.0"
+        },
+        "Ln": {
+            "enabled": true,
+            "description": "📝 Line number system",
+            "usage": ".Ln [number]",
+            "category": "utility",
+            "admin_only": false,
+            "group_allowed": true,
+            "cooldown": 5,
+            "mention_support": false,
+            "sequential": false,
+            "version": "1.0.0"
+        }
+    },
+    "categories": {
+        "fun": ["murgi", "dio"],
+        "romantic": ["love"],
+        "utility": ["pick", "diagram", "Ln"],
+        "info": ["info", "uid"]
+    },
+    "statistics": {
+        "total_commands": 8,
+        "commands_with_mentions": 5,
+        "sequential_commands": 1,
+        "last_updated": "2024-01-15T10:30:00",
+        "total_mentions_sent": 0
+    },
+    "settings": {
+        "auto_update": true,
+        "backup_enabled": true,
+        "analytics_enabled": true,
+        "version": "2.0.0"
+    }
+}
