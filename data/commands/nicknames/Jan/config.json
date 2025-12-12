@@ -1,1 +1,16 @@
-
+{
+    "nickname": "Jan",
+    "aliases": ["জান", "jan", "JAN", "Jan"],
+    "response_type": "friendly",
+    "enabled": true,
+    "priority": 3,
+    "responses_count": 10,
+    "random_response": true,
+    "mention_user": true,
+    "bangla_responses": 10,
+    "english_responses": 0,
+    "emoji_enabled": true,
+    "cooldown": 2,
+    "informal_tone": true,
+    "friendship_level": "high"
+}
