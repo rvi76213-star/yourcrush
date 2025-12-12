@@ -1,1 +1,27 @@
-
+{
+    "name": "murgi",
+    "description": "🐔 Sequential chicken messages with mentions",
+    "version": "2.0.0",
+    "enabled": true,
+    "delay_between_lines": 2,
+    "delay_between_versions": 5,
+    "auto_continue": true,
+    "mention_target": "user",  # user/admin/both/none
+    "mention_in_every_message": true,
+    "include_original_sender": false,
+    "max_lines_per_version": 15,
+    "stop_command": "stop!",
+    "pause_command": "pause!",
+    "resume_command": "resume!",
+    "loop_count": 1,
+    "allow_group": true,
+    "require_admin": false,
+    "mention_format": "@{user} {message}",
+    "special_commands": {
+        "murgi @user": "Start murgi with mention to user",
+        "stop!": "Stop current murgi",
+        "pause!": "Pause murgi",
+        "resume!": "Resume murgi",
+        "status!": "Check murgi status"
+    }
+}
