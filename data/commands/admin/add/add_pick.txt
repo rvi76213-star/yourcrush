@@ -1,1 +1,21 @@
+ADMIN COMMAND: !add pick
 
+Description: Add new item to random pick system
+
+Usage: !add pick "item_name" [category] [weight]
+
+Parameters:
+  "item_name" - Item name in quotes (required)
+  category - Optional category name
+  weight - Optional selection weight (1-10, default: 5)
+
+Examples:
+  !add pick "Pizza"
+  !add pick "Chocolate" food 7
+  !add pick "Action Movie" movies 8
+
+Notes:
+  - Item name must be in quotes
+  - Categories: food, drinks, movies, games, places
+  - Higher weight = more likely to be picked
+  - Max 1000 items total

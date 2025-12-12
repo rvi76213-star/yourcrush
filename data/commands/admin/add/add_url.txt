@@ -1,0 +1,22 @@
+ADMIN COMMAND: !add url
+
+Description: Add URL to bot's database
+
+Usage: !add url "name" "url" [category] [description]
+
+Parameters:
+  "name" - URL name in quotes (required)
+  "url" - Full URL in quotes (required)
+  category - Optional category
+  description - Optional description
+
+Examples:
+  !add url "GitHub" "https://github.com"
+  !add url "Facebook" "https://facebook.com" social
+  !add url "Documentation" "https://docs.example.com" help "Bot documentation"
+
+Notes:
+  - Both name and URL must be in quotes
+  - URL must start with http:// or https://
+  - Categories: social, docs, help, resources, tools
+  - Max URL length: 500 characters

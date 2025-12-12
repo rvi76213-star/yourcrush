@@ -1,0 +1,24 @@
+ADMIN COMMAND: !add user
+
+Description: Add user to whitelist or special permissions
+
+Usage: !add user @username [permission_level] [group]
+
+Parameters:
+  @username - User mention (required)
+  permission_level - Optional (1-10, default: 1)
+  group - Optional group name
+
+Examples:
+  !add user @JohnDoe
+  !add user @JaneDoe 5 premium
+  !add user @AdminUser 10 admin
+
+Notes:
+  - User must be mentioned with @
+  - Permission levels:
+      1: Basic user
+      5: Premium user  
+      7: Moderator
+      10: Admin
+  - Groups: user, premium, moderator, admin
