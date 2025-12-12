@@ -1,0 +1,52 @@
+{
+    "learning_system": {
+        "enabled": true,
+        "version": "1.0.0",
+        "description": "AI Learning system configuration"
+    },
+    "learning_sources": {
+        "from_users": {
+            "enabled": true,
+            "max_patterns_per_user": 100,
+            "pattern_expiry_days": 30,
+            "min_confidence": 0.7
+        },
+        "from_admin": {
+            "enabled": true,
+            "priority_learning": true,
+            "override_user_patterns": true
+        },
+        "from_bot": {
+            "enabled": true,
+            "self_improvement": true,
+            "success_rate_tracking": true
+        }
+    },
+    "memory_settings": {
+        "max_user_memory": 1000,
+        "max_conversation_history": 50,
+        "max_learning_entries": 10000,
+        "memory_expiry_days": 90,
+        "compression_enabled": true
+    },
+    "response_generation": {
+        "response_delay": 2,
+        "typing_indicator": true,
+        "typing_duration": 1,
+        "context_aware": true,
+        "personalization": true
+    },
+    "personality_settings": {
+        "romantic_level": "high",
+        "friendliness": "high",
+        "humor": "medium",
+        "formality": "low",
+        "response_style": "flirty"
+    },
+    "statistics": {
+        "total_learned_patterns": 0,
+        "success_rate": 0,
+        "improvement_rate": 0,
+        "user_satisfaction": 0
+    }
+}

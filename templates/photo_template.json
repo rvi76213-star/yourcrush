@@ -1,0 +1,51 @@
+{
+    "photo_system": {
+        "enabled": true,
+        "version": "1.0.0",
+        "description": "Photo delivery system configuration"
+    },
+    "local_photos": {
+        "enabled": true,
+        "directory": "data/photos/",
+        "supported_formats": [".jpg", ".jpeg", ".png", ".gif"],
+        "max_size_mb": 10,
+        "auto_resize": true,
+        "max_dimensions": [1024, 1024]
+    },
+    "facebook_photos": {
+        "enabled": true,
+        "profile_url": "https://www.facebook.com/share/17gEJAipcr/",
+        "cache_duration": 3600,
+        "max_cache_size": 100,
+        "download_quality": "high"
+    },
+    "request_patterns": {
+        "bot_photos": [
+            "ছবি দাও",
+            "ফটো চাই", 
+            "তোমার ছবি",
+            "your photo",
+            "photo please"
+        ],
+        "admin_photos": [
+            "এডমিনের ছবি",
+            "বটের এডমিনের ছবি",
+            "মালিকের ছবি",
+            "admin photo"
+        ]
+    },
+    "delivery_settings": {
+        "auto_send_welcome_photo": false,
+        "welcome_photo_delay": 5,
+        "compression_quality": 85,
+        "add_watermark": false,
+        "add_caption": true
+    },
+    "statistics": {
+        "photos_sent": 0,
+        "photos_received": 0,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "average_delivery_time": 0
+    }
+}

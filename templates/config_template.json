@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+CONFIGURATION TEMPLATE
+=====================
+
+Template for creating new configuration files.
+Copy this template and modify for your needs.
+"""
+
+import os
+from typing import Dict, Any, Optional
+
+# ==================== CONFIGURATION ====================
+CONFIG_NAME = {
+    # Basic settings
+    "enabled": True,
+    "version": "1.0.0",
+    "description": "Configuration description",
+    
+    # Feature settings
+    "feature1": {
+        "enabled": True,
+        "setting1": "value1",
+        "setting2": "value2"
+    },
+    
+    "feature2": {
+        "enabled": False,
+        "settings": {
+            "option1": True,
+            "option2": False
+        }
+    },
+    
+    # Performance settings
+    "performance": {
+        "max_instances": 10,
+        "timeout": 30,
+        "retry_count": 3
+    },
+    
+    # Security settings
+    "security": {
+        "encryption": True,
+        "authentication": True,
+        "logging": True
+    }
+}
+
+# ==================== HELPER FUNCTIONS ====================
+def get_config() -> Dict[str, Any]:
+    """Get configuration"""
+    return CONFIG_NAME.copy()
+
+def save_config(config: Dict[str, Any]) -> bool:
+    """Save configuration to file"""
+    try:
+        import json
+        config_file = "config/config_name.json"
+        os.makedirs(os.path.dirname(config_file), exist_ok=True)
+        
+        with open(config_file, 'w', encoding='utf-8') as f:
+            json.dump(config, f, indent=2, ensure_ascii=False)
+        
+        print(f"✅ Configuration saved to {config_file}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error saving configuration: {e}")
+        return False
+
+def validate_config(config: Dict[str, Any]) -> bool:
+    """Validate configuration"""
+    errors = []
+    
+    # Add validation logic here
+    if not config.get("enabled") in [True, False]:
+        errors.append("enabled must be true or false")
+    
+    if errors:
+        print("❌ Configuration validation failed:")
+        for error in errors:
+            print(f"  - {error}")
+        return False
+    
+    print("✅ Configuration validated successfully")
+    return True
+
+# ==================== INITIALIZATION ====================
+if __name__ == "__main__":
+    # Create config file if it doesn't exist
+    config_file = "config/config_name.json"
+    if not os.path.exists(config_file):
+        save_config(CONFIG_NAME)
+        print("📁 Created default config file")
+    
+    # Validate configuration
+    validate_config(CONFIG_NAME)

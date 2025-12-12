@@ -1,0 +1,216 @@
+{
+    "template_info": {
+        "name": "response_template",
+        "version": "2.0.0",
+        "description": "Template for creating bot response configurations",
+        "author": "YOUR CRUSH AI BOT",
+        "created": "2024-01-15"
+    },
+    
+    "response_metadata": {
+        "response_type": "[greeting/farewell/question/compliment/romantic/neutral/error/command]",
+        "category": "[category_name]",
+        "priority": 1,
+        "enabled": true,
+        "version": "1.0.0"
+    },
+    
+    "content_definition": {
+        "base_responses": [
+            "[response_text_1]",
+            "[response_text_2]",
+            "[response_text_3]"
+        ],
+        
+        "response_variations": {
+            "simple": ["[simple_response_1]", "[simple_response_2]"],
+            "detailed": ["[detailed_response_1]", "[detailed_response_2]"],
+            "funny": ["[funny_response_1]", "[funny_response_2]"],
+            "romantic": ["[romantic_response_1]", "[romantic_response_2]"]
+        },
+        
+        "dynamic_elements": {
+            "variables": {
+                "{user}": "User's name or mention",
+                "{time}": "Current time",
+                "{date}": "Current date",
+                "{day}": "Day of week",
+                "{bot}": "Bot name",
+                "{admin}": "Admin name",
+                "{random_number}": "Random number",
+                "{emoji}": "Random emoji from list"
+            },
+            
+            "conditionals": {
+                "time_based": {
+                    "morning": "[morning_response]",
+                    "afternoon": "[afternoon_response]",
+                    "evening": "[evening_response]",
+                    "night": "[night_response]"
+                },
+                "mood_based": {
+                    "happy": "[happy_response]",
+                    "sad": "[sad_response]",
+                    "excited": "[excited_response]",
+                    "angry": "[angry_response]"
+                }
+            }
+        }
+    },
+    
+    "trigger_conditions": {
+        "keywords": ["[keyword1]", "[keyword2]", "[keyword3]"],
+        "phrases": ["[phrase1]", "[phrase2]", "[phrase3]"],
+        "patterns": ["[regex_pattern1]", "[regex_pattern2]"],
+        "context_triggers": {
+            "after_command": "[command_name]",
+            "in_conversation": "[topic]",
+            "user_mood": "[mood]",
+            "time_of_day": "[time_range]"
+        }
+    },
+    
+    "formatting_options": {
+        "text_formats": [
+            "[emoji] [message]",
+            "[message] [emoji]",
+            "👤 @{user} [message]",
+            "💬 [message]\n\n{footer}",
+            "📝 **Header**\n[message]\n\n_Footer_"
+        ],
+        
+        "embellishments": {
+            "emojis": ["😊", "✨", "💖", "🎯", "🌟"],
+            "dividers": ["─", "═", "━", "═", "╌"],
+            "bullets": ["•", "◦", "▪", "▫", "‣"],
+            "spacing": "single"  // single/double/triple
+        },
+        
+        "structure_templates": {
+            "simple": "[message]",
+            "header_body": "**[header]**\n[message]",
+            "list": "• [item1]\n• [item2]\n• [item3]",
+            "quote": "> [message]",
+            "code": "`[message]`"
+        }
+    },
+    
+    "behavior_settings": {
+        "selection_method": "random",  // random/sequential/weighted/contextual
+        "weighted_distribution": {
+            "[response1]": 0.4,
+            "[response2]": 0.3,
+            "[response3]": 0.2,
+            "[response4]": 0.1
+        },
+        
+        "context_awareness": {
+            "use_conversation_history": true,
+            "consider_user_mood": true,
+            "adapt_to_time": true,
+            "personalize_for_user": true
+        },
+        
+        "timing_control": {
+            "response_delay": 2,
+            "typing_duration": 1,
+            "cooldown_period": 5,
+            "max_uses_per_hour": 10
+        }
+    },
+    
+    "personalization": {
+        "user_specific": {
+            "enabled": true,
+            "learning_enabled": true,
+            "preference_tracking": true,
+            "adaptation_rate": 0.1
+        },
+        
+        "variables_mapping": {
+            "user_name": "{user}",
+            "user_preferences": "{preferences}",
+            "conversation_history": "{history}",
+            "relationship_level": "{relationship}"
+        }
+    },
+    
+    "quality_control": {
+        "validation_rules": {
+            "min_length": 1,
+            "max_length": 500,
+            "allowed_chars": "[regex]",
+            "prohibited_content": ["[bad_word1]", "[bad_word2]"]
+        },
+        
+        "testing": {
+            "test_cases": [
+                {"input": "[test_input]", "expected": "[expected_output]"},
+                {"input": "[test_input2]", "expected": "[expected_output2]"}
+            ],
+            "success_threshold": 0.8
+        },
+        
+        "improvement": {
+            "collect_feedback": true,
+            "auto_optimize": true,
+            "version_control": true,
+            "backup_before_update": true
+        }
+    },
+    
+    "analytics_tracking": {
+        "usage_metrics": {
+            "total_uses": 0,
+            "successful_uses": 0,
+            "failed_uses": 0,
+            "average_response_time": 0,
+            "user_feedback_score": 0
+        },
+        
+        "performance_indicators": {
+            "engagement_rate": 0,
+            "satisfaction_rate": 0,
+            "conversation_continuation_rate": 0,
+            "error_rate": 0
+        },
+        
+        "optimization_data": {
+            "most_effective_variations": [],
+            "least_effective_variations": [],
+            "suggested_improvements": [],
+            "a_b_testing_results": {}
+        }
+    },
+    
+    "integration_settings": {
+        "compatible_with": ["[feature1]", "[feature2]"],
+        "dependencies": ["[dependency1]", "[dependency2]"],
+        "conflicts_with": ["[conflict1]", "[conflict2]"],
+        "api_endpoints": {
+            "validate": "/api/response/validate",
+            "generate": "/api/response/generate",
+            "analyze": "/api/response/analyze"
+        }
+    },
+    
+    "documentation": {
+        "usage_examples": [
+            "Example 1: [example1]",
+            "Example 2: [example2]",
+            "Example 3: [example3]"
+        ],
+        
+        "notes": [
+            "Note 1: [note1]",
+            "Note 2: [note2]",
+            "Note 3: [note3]"
+        ],
+        
+        "changelog": [
+            "v1.0.0: Initial version",
+            "v1.1.0: Added [feature]",
+            "v1.2.0: Fixed [bug]"
+        ]
+    }
+}
